@@ -1,0 +1,15 @@
+# Secrets
+.env
+
+# Local runtime data (candles, journal, tokens, logs)
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+
+# Claude Code local settings
+.claude/settings.local.json

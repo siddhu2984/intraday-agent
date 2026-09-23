@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stock-agent"
+version = "0.1.0"
+description = "Intraday trading agent for NSE (see docs/architecture.md)"
+requires-python = ">=3.11"
+dependencies = [
+    "fyers-apiv3",
+    "python-dotenv",
+    "tzdata",  # zoneinfo data on Windows
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
