@@ -9,6 +9,8 @@ description = "Intraday trading agent for NSE (see docs/architecture.md)"
 requires-python = ">=3.11"
 dependencies = [
     "fyers-apiv3",
+    "pandas",
+    "pyarrow",
     "python-dotenv",
     "tzdata",  # zoneinfo data on Windows
 ]

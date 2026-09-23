@@ -2,7 +2,7 @@
 .env
 
 # Local runtime data (candles, journal, tokens, logs)
-data/
+/data/
 
 # Python
 __pycache__/

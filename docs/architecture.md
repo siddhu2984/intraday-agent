@@ -114,43 +114,75 @@ previous close, same-window RVOL, ATR warm-up, v1.1 volume profiles).
 | Range per request | 1-min: max 100 days (101 → `-50 Invalid input`) | Downloader requests ≤ 100-day chunks |
 | Corporate actions | Prices are **split/bonus-adjusted**, retroactively (RELIANCE, BAJFINANCE, NESTLEIND, HDFCBANK showed no jump on their ex-dates) | See *adjustment* below |
 | Volume | **Also adjusted.** Median volume 20 sessions after ÷ before the ex-date: 0.73× (RELIANCE, 2× event), 0.84× (BAJFINANCE, 10×), 1.05× (NESTLEIND, 2×), 1.21× (HDFCBANK, 2×) — within the no-event SBIN control range (0.64–1.10×), far from the factor. 1-min volume sums to daily volume (0.998–1.000) | 20-day volume baselines (RVOL, turnover) are safe across ex-dates |
-| Latency | ~0.06 s median per call | Download time is set by the rate limit: ~2,000 calls for 500 stocks × 12 months ≈ 15 min at ≤ 150 calls/min |
+| Latency | ~0.06 s median per call | Download time is set by the rate limit, not latency (see *Rate limit* below) |
 
-**Layout** — one Parquet file per trading day holding every symbol:
+**Layout** — the same 1-min candles in two layouts, so both access patterns read few files:
 
 ```
-data/candles/1m/2026-09-23.parquet     # ~500 stocks + NIFTY50 index, 09:15–15:29, ~2–3 MB
-data/candles/manifest.sqlite           # which day/symbol is downloaded, when, and its quality-check result
+data/candles/
+├── by_symbol/NSE_SBIN-EQ/1m_2026Q3.parquet   # one stock × one calendar quarter (as downloaded)
+├── by_symbol/NSE_SBIN-EQ/1d_2026.parquet     # one stock × one calendar year of daily bars
+├── 1m/2026-09-23.parquet                     # every stock for one day, sorted by symbol (built from by_symbol)
+└── manifest.sqlite                           # downloaded chunks (complete?) + per stock-day quality results
 ```
+
+| Question | Layout | Read (pilot, measured) |
+|---|---|---|
+| All stocks on one day — backtest replay, morning load | `1m/<day>.parquet` | 1 file, ~0.01 s (21 stocks) |
+| One stock over 3 years — research | `by_symbol/<stock>/1m_*.parquet` | 13 files, 0.16 s |
+| Whole store, day by day | `1m/*.parquet` | 742 files, 7.7 s (21 stocks) |
 
 | Column | Type | Notes |
 |---|---|---|
-| `symbol` | string | FYERS format, e.g. `NSE:SBIN-EQ` |
-| `ts` | timestamp, IST | Candle start minute |
+| `symbol` | string | FYERS format, e.g. `NSE:SBIN-EQ` (`:` becomes `_` in directory names) |
+| `ts` | timestamp[ms], IST | Candle start minute |
 | `open`, `high`, `low`, `close` | float64 | As returned by FYERS (adjusted) |
 | `volume` | int64 | |
 
-- **Why per day:** every access pattern is by date — the nightly archive writes one new file, the backtest replays
-  day by day, the morning load reads 20 files. ~0.5–0.8 GB per year for the full universe.
+- **Size:** zstd-compressed Parquet (21% smaller than the default snappy, same read speed), row groups of 25,000
+  rows so a one-symbol read skips most of a day file. Pilot: 185 MB for 21 symbols × 3 years (96 MB by_symbol +
+  89 MB by-day) → **~4.5 GB for the Nifty 500 × 3 years**.
+- **Why two layouts:** FYERS returns one stock at a time, so by_symbol is the natural download unit and makes a
+  corporate-action refresh a one-stock re-download; the by-day files serve the backtest and live agent.
+- **Chunks:** 1-min in calendar quarters (≤ 92 days, under the 100-day limit), daily in calendar years. A chunk
+  whose period has ended is marked complete and never re-fetched; the chunk holding the latest session is
+  re-fetched on every run. Today counts as final only after 15:45 IST.
 - **Atomic writes:** write to a temp name, then rename; a crash never leaves a half-written file.
-- **Resumable:** the downloader consults the manifest and skips what is already stored.
+- **Rate limit:** ≤ 3 calls/s and ≤ 150 calls/min (FYERS publishes 10/s, 200/min); 3 retries with backoff per chunk.
+  Full universe: ~500 × 17 chunks ≈ 8,500 calls ≈ 1 hour, once; afterwards one call per stock per run.
 - **Not stored:** 5-min candles, VWAP, ATR — derived from 1-min on read, so there is one source of truth.
 - **Adjustment:** because FYERS rescales old prices after a split or bonus, stored history for that symbol goes
-  stale on the ex-date. On each corporate action (from the corporate-actions list in `config/universe/`), the
-  downloader re-fetches that symbol's full history and rewrites it in the affected files.
-- **Daily bars:** also fetched (`resolution=D`). The **official NSE close** differs slightly from the last 1-min
-  close (it is a 30-minute average), and it is what the pre-open gap in Stage A is measured against.
+  stale on the ex-date. On each corporate action (from the corporate-actions list in `config/universe/`), that
+  symbol's by_symbol chunks are re-fetched and the by-day files rebuilt.
+- **Daily bars:** the **official NSE close** differs slightly from the last 1-min close (it is a 30-minute
+  average), and it is what the pre-open gap in Stage A is measured against.
 
-**Quality checks** (per day, results in the manifest; a failing day is excluded from backtests and alerts in live):
-- 375 bars per regular session, 09:15–15:29, no duplicates; special sessions (e.g. Muhurat) checked against the calendar.
-  **Pre-open bars:** on some days FYERS also returns 09:08–09:14 bars — the 09:08 bar is the pre-open auction
-  (equilibrium price, matched volume), 09:09–09:14 are flat zero-volume fillers (seen on 2026-09-09: 382 bars;
-  the other 23 days in Aug 20–Sep 23 had none). Being inconsistent, they are dropped from the store; the gap
-  in Stage A uses the live pre-open quote, not history.
-- No zero/negative prices; `low ≤ open, close ≤ high`.
-- Bars with no trades are allowed.
-- Sum of the day's 1-min volume ≈ the daily bar's volume (the daily bar includes pre-open auction volume,
-  so expect it to be slightly higher, ~1%).
+**Cleaning** (at download): keep 09:15–15:29 only, drop duplicate timestamps. On some days FYERS also returns
+09:08–09:14 bars — the 09:08 bar is the pre-open auction (equilibrium price, matched volume), 09:09–09:14 are flat
+zero-volume fillers (seen on 2026-09-09: 382 bars). Being inconsistent, they are dropped; the gap in Stage A uses
+the live pre-open quote, not history.
+
+**Quality checks** (per stock-day, results in the manifest). `fail` stock-days are excluded by `read_day`
+(and should alert in live); `warn` stays in the data, flagged:
+
+| Check | Result |
+|---|---|
+| Missing / non-positive price, negative volume | fail |
+| open/close outside high/low by > 0.5% of price | fail |
+| open/close outside high/low by ≤ 0.5% | warn |
+| Fewer bars than the index had that day (index short → special session, e.g. Muhurat) | warn |
+| No bars on a day inside the stock's listed span | warn |
+| Σ 1-min volume ÷ daily volume outside 0.90–1.01 | warn |
+
+**Pilot result** (20 large caps + NIFTY50, 2023-09-23 → 2026-09-23, 742 days, 15,582 stock-days):
+15,505 ok, 76 warn, 1 fail.
+- 66 warn: open/close ≤ 0.2% outside high/low, almost all Nov 2023–Feb 2024 (a FYERS candle-building quirk
+  of that period); at 09:15 the open is typically the auction price, missing from the bar's high/low.
+- 9 warn: volume ratio 0.83–0.89 (likely block-deal-window trades, which are in the daily bar only) and
+  BHARTIARTL 2026-09-18 at 1.28 (a +3% jump in the 15:28 bar on 5.3 M shares — unexplained; kept, flagged).
+- Real events show up correctly: Muhurat session 2025-10-21 (61 bars, index also 61); ITC demerger
+  special pre-open on 2025-01-06 (351 bars).
+- 1 fail: HINDUNILVR 2025-12-05 (demerger day) — open 1.3% outside the bar's range, adjusted inconsistently.
 
 ### 4.3 News adapter (`news/`)
 - Fetches headlines (text, timestamp, source, tickers) from an Indian-market news API. No scraping.
@@ -461,7 +493,7 @@ Historical news backtests are unreliable (timestamp quality, and the model may a
 
 | Phase | Deliverable | Exit criteria |
 |---|---|---|
-| **0. Spec & data** | This doc finalized; ~~broker chosen~~ (FYERS); ~~data source chosen~~ (FYERS history, §4.2b); candle downloader + store; point-in-time Nifty 500 list with sectors | Pilot (~20 stocks + NIFTY50 × 36 months) passes quality checks; then the full universe loadable |
+| **0. Spec & data** | This doc finalized; ~~broker chosen~~ (FYERS); ~~data source chosen~~ (FYERS history, §4.2b); candle downloader + store; point-in-time Nifty 500 list with sectors | ~~Pilot (20 stocks + NIFTY50 × 36 months) passes quality checks~~ (done, §4.2b); then the full universe loadable |
 | **1. Core + risk** | Config, journal, risk gate, sizing, kill switch, calendar | Unit tests cover every risk rule and edge case |
 | **2. Backtester** | `SimBroker`, cost model, ORB strategy, screener, reports | Reproducible backtest report; passes or fails the success criteria. **Stop and rethink the strategy if it fails.** |
 | **3. Broker + OMS** | `LiveBroker` adapter, OMS state machine, reconciler, alerts | Paper mode runs a full day unattended; kill-the-process test recovers correctly |
