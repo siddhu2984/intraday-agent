@@ -27,6 +27,9 @@ screener:
   min_atr_pct: 1.0
   max_atr_pct: 5.0
   watchlist_size: 10
+  stage_a_top_n: 40
+  lookback_days: 20
+  min_band_pct: 5
 rescan:
   enabled: false
   rescan_start: "09:45"
@@ -59,6 +62,22 @@ ops:
   max_tick_jump_pct: 5
   reconcile_interval_s: 30
   max_clock_drift_s: 2
+costs:
+  brokerage_pct: 0.03
+  brokerage_max: 20
+  stt_sell_pct: 0.025
+  exchange_pct: 0.00297
+  sebi_pct: 0.0001
+  stamp_buy_pct: 0.003
+  gst_pct: 18
+backtest:
+  start: "2023-10-25"
+  end: "2026-09-23"
+  validation_fraction: 0.333
+  slippage_bps: 5
+  no_band_assumed_pct: 10
+  block_corporate_events: true
+  baseline_seeds: 5
 """)
 
 

@@ -8,7 +8,7 @@ from __future__ import annotations
 import dataclasses
 import typing
 from dataclasses import dataclass
-from datetime import time
+from datetime import date, time
 from pathlib import Path
 
 import yaml
@@ -46,6 +46,9 @@ class ScreenerConfig:
     min_atr_pct: float
     max_atr_pct: float
     watchlist_size: int
+    stage_a_top_n: int
+    lookback_days: int
+    min_band_pct: float
 
 
 @dataclass(frozen=True)
@@ -93,6 +96,28 @@ class OpsConfig:
 
 
 @dataclass(frozen=True)
+class CostsConfig:
+    brokerage_pct: float
+    brokerage_max: float
+    stt_sell_pct: float
+    exchange_pct: float
+    sebi_pct: float
+    stamp_buy_pct: float
+    gst_pct: float
+
+
+@dataclass(frozen=True)
+class BacktestConfig:
+    start: date
+    end: date
+    validation_fraction: float
+    slippage_bps: float
+    no_band_assumed_pct: float
+    block_corporate_events: bool
+    baseline_seeds: int
+
+
+@dataclass(frozen=True)
 class Settings:
     mode: str
     capital: float
@@ -102,6 +127,8 @@ class Settings:
     strategy: StrategyConfig
     news: NewsConfig
     ops: OpsConfig
+    costs: CostsConfig
+    backtest: BacktestConfig
 
 
 def _convert(value, kind, where: str):
@@ -114,6 +141,15 @@ def _convert(value, kind, where: str):
             except ValueError:
                 pass
         raise ConfigError(f"{where}: expected a time like \"14:30\", got {value!r}")
+    if kind is date:
+        if isinstance(value, date):  # YAML reads an unquoted 2024-01-31 as a date
+            return value
+        if isinstance(value, str):
+            try:
+                return date.fromisoformat(value)
+            except ValueError:
+                pass
+        raise ConfigError(f"{where}: expected a date like \"2024-01-31\", got {value!r}")
     if kind is bool:
         if isinstance(value, bool):
             return value
@@ -167,12 +203,39 @@ def validate(s: Settings) -> list[str]:
     need(st.target_r > 0 and st.breakeven_at_r > 0, "strategy.target_r and breakeven_at_r must be > 0")
     need(st.last_entry < st.force_exit, "strategy.last_entry must be before force_exit")
     need(0 <= s.news.veto_confidence <= 100, "news.veto_confidence must be in [0, 100]")
+    sc, bt = s.screener, s.backtest
+    need(sc.watchlist_size <= sc.stage_a_top_n, "screener.watchlist_size must be <= stage_a_top_n")
+    need(sc.lookback_days >= 5, "screener.lookback_days must be >= 5")
+    need(all(v >= 0 for v in dataclasses.asdict(s.costs).values()), "costs must be >= 0")
+    need(bt.start <= bt.end, "backtest.start must be <= end")
+    need(0 < bt.validation_fraction < 1, "backtest.validation_fraction must be in (0, 1)")
+    need(bt.slippage_bps >= 0, "backtest.slippage_bps must be >= 0")
+    need(bt.no_band_assumed_pct > 0, "backtest.no_band_assumed_pct must be > 0")
+    need(bt.baseline_seeds >= 1, "backtest.baseline_seeds must be >= 1")
     return problems
 
 
-def load_settings(path: Path = DEFAULT_PATH) -> Settings:
+def apply_overrides(data: dict, overrides: list[str]) -> dict:
+    """'risk.leverage=5' style overrides on the raw YAML mapping; values are parsed as YAML."""
+    for item in overrides:
+        key, sep, value = item.partition("=")
+        if not sep:
+            raise ConfigError(f"override {item!r}: expected key=value")
+        *parents, leaf = key.strip().split(".")
+        node = data
+        for p in parents:
+            if not isinstance(node.get(p), dict):
+                raise ConfigError(f"override {item!r}: no section {p!r}")
+            node = node[p]
+        if leaf not in node:
+            raise ConfigError(f"override {item!r}: unknown key {key!r}")
+        node[leaf] = yaml.safe_load(value)
+    return data
+
+
+def load_settings(path: Path = DEFAULT_PATH, overrides: list[str] = ()) -> Settings:
     with open(path, encoding="utf-8") as f:
-        settings = _build(Settings, yaml.safe_load(f), "")
+        settings = _build(Settings, apply_overrides(yaml.safe_load(f), list(overrides)), "")
     problems = validate(settings)
     if problems:
         raise ConfigError(f"{path}: " + "; ".join(problems))
@@ -180,8 +243,10 @@ def load_settings(path: Path = DEFAULT_PATH) -> Settings:
 
 
 def to_dict(s: Settings) -> dict:
-    """JSON-friendly copy (times as "HH:MM"), e.g. to store with a journal run."""
+    """JSON-friendly copy (times as "HH:MM", dates ISO), e.g. to store with a journal run."""
     def plain(value):
-        return value.strftime("%H:%M") if isinstance(value, time) else value
+        if isinstance(value, time):
+            return value.strftime("%H:%M")
+        return value.isoformat() if isinstance(value, date) else value
     return {k: ({kk: plain(vv) for kk, vv in v.items()} if isinstance(v, dict) else plain(v))
             for k, v in dataclasses.asdict(s).items()}

@@ -20,6 +20,9 @@ screener:
   min_atr_pct: 1.0
   max_atr_pct: 5.0
   watchlist_size: 10
+  stage_a_top_n: 40             # Stage A candidates kept, by |gap|
+  lookback_days: 20             # sessions for avg turnover and RVOL
+  min_band_pct: 5               # drop stocks whose price band is <= this (F&O 'No Band' passes)
 rescan:                        # v1.1 — §4.4b
   enabled: false
   rescan_start: "09:45"
@@ -52,3 +55,19 @@ ops:
   max_tick_jump_pct: 5
   reconcile_interval_s: 30
   max_clock_drift_s: 2
+costs:                         # FYERS intraday equity charges (verify against the current charge sheet)
+  brokerage_pct: 0.03          # per executed order, capped at brokerage_max
+  brokerage_max: 20
+  stt_sell_pct: 0.025
+  exchange_pct: 0.00297        # NSE transaction charges
+  sebi_pct: 0.0001             # Rs 10 per crore
+  stamp_buy_pct: 0.003
+  gst_pct: 18                  # on brokerage + exchange + SEBI
+backtest:
+  start: "2023-10-25"          # first day with 20 sessions of history in the candle store
+  end: "2026-09-23"
+  validation_fraction: 0.333   # last third of trading days = out-of-sample
+  slippage_bps: 5              # on stop and market exits
+  no_band_assumed_pct: 10      # circuit band for F&O ('No Band') stocks
+  block_corporate_events: true # results day / ex-date hard block (§4.6)
+  baseline_seeds: 5

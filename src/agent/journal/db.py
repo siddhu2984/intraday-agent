@@ -43,6 +43,10 @@ def _git_commit() -> str | None:
         return None
 
 
+def new_run_id(started: datetime) -> str:
+    return f"{started:%Y%m%d-%H%M%S}-{secrets.token_hex(3)}"
+
+
 class Journal:
     def __init__(self, path: Path | str = DEFAULT_PATH):
         if str(path) != ":memory:":
@@ -58,10 +62,10 @@ class Journal:
         self._db.close()
 
     def start_run(self, settings: Settings, mode: str | None = None, note: str = "",
-                  started_at: datetime | None = None) -> str:
+                  started_at: datetime | None = None, run_id: str | None = None) -> str:
         """Start a run; every later row is tagged with its run_id."""
         started = started_at or datetime.now(IST)
-        self.run_id = f"{started:%Y%m%d-%H%M%S}-{secrets.token_hex(3)}"
+        self.run_id = run_id or new_run_id(started)
         self._insert("runs", {
             "run_id": self.run_id, "mode": mode or settings.mode, "started_at": started.isoformat(),
             "git_commit": _git_commit(), "config": to_json(to_dict(settings)), "note": note,
@@ -69,10 +73,17 @@ class Journal:
         return self.run_id
 
     def _insert(self, table: str, row: dict) -> None:
-        columns = ", ".join(row)
-        placeholders = ", ".join("?" * len(row))
+        self._insert_many(table, [row])
+
+    def _insert_many(self, table: str, rows: list[dict]) -> None:
+        """Rows with the same keys, in one transaction."""
+        if not rows:
+            return
+        columns = ", ".join(rows[0])
+        placeholders = ", ".join("?" * len(rows[0]))
         with self._db:
-            self._db.execute(f"INSERT INTO {table} ({columns}) VALUES ({placeholders})", list(row.values()))
+            self._db.executemany(f"INSERT INTO {table} ({columns}) VALUES ({placeholders})",
+                                 [list(r.values()) for r in rows])
 
     def _run_row(self, ts: datetime | None) -> dict:
         if self.run_id is None:
@@ -85,14 +96,48 @@ class Journal:
         self._insert("system_events", {**self._run_row(ts), "kind": kind, "level": level, "message": message,
                                         "detail": to_json(detail) if detail is not None else None})
 
-    def log_risk_decision(self, intent: EntryIntent | ExitIntent, decision, ts: datetime | None = None) -> None:
-        """An EntryIntent or ExitIntent and the gate's Decision, with every check and the sizing."""
-        kind = "exit" if isinstance(intent, ExitIntent) else "entry"
-        self._insert("risk_decisions", {
-            **self._run_row(ts), "symbol": intent.symbol, "side": intent.side.value, "kind": kind,
+    def _risk_row(self, intent: EntryIntent | ExitIntent, decision, ts: datetime | None) -> dict:
+        return {
+            **self._run_row(ts), "symbol": intent.symbol, "side": intent.side.value,
+            "kind": "exit" if isinstance(intent, ExitIntent) else "entry",
             "approved": int(decision.approved), "qty": decision.qty, "reason": decision.reason,
             "detail": to_json({"intent": intent, "sizing": decision.sizing, "checks": decision.checks}),
-        })
+        }
+
+    def log_risk_decision(self, intent: EntryIntent | ExitIntent, decision, ts: datetime | None = None) -> None:
+        """An EntryIntent or ExitIntent and the gate's Decision, with every check and the sizing."""
+        self._insert("risk_decisions", self._risk_row(intent, decision, ts))
+
+    # --- bulk writers for backtest results (dict rows from agent.backtest.engine.DayResult) ---
+
+    def log_risk_decisions(self, items: list[tuple]) -> None:
+        """(intent, decision, ts) triples."""
+        self._insert_many("risk_decisions", [self._risk_row(*item) for item in items])
+
+    def log_screen_results(self, rows: list[dict]) -> None:
+        self._insert_many("screen_results", [
+            {**self._run_row(r["ts"]), "day": r["day"].isoformat(), "symbol": r["symbol"], "stage": r["stage"],
+             "passed": int(r["passed"]), "detail": to_json({"reason": r["reason"], **r["detail"]})}
+            for r in rows])
+
+    def log_signals(self, rows: list[dict]) -> None:
+        self._insert_many("signals", [
+            {**self._run_row(r["ts"]), "symbol": r["symbol"], "side": r["side"], "entry": r["entry"],
+             "stop": r["stop"], "target": r["target"], "reason": r["reason"],
+             "detail": to_json({"outcome": r["outcome"], "detail": r["detail"], "qty": r.get("qty"),
+                                "features": r["features"]})}
+            for r in rows])
+
+    def log_trades(self, rows: list[dict]) -> None:
+        if self.run_id is None:
+            raise RuntimeError("call start_run() before writing to the journal")
+        core = ("symbol", "side", "qty", "entry_ts", "entry_price", "exit_ts", "exit_price", "exit_reason",
+                "r_multiple", "pnl_gross", "costs", "pnl_net")
+        self._insert_many("trades", [
+            {"run_id": self.run_id,
+             **{k: (r[k].isoformat() if hasattr(r[k], "isoformat") else r[k]) for k in core},
+             "detail": to_json({k: v for k, v in r.items() if k not in core})}
+            for r in rows])
 
     def rows(self, table: str, **where) -> list[dict]:
         """Rows of one table for the current run (for reports and tests)."""
