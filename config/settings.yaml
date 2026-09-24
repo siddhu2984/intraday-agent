@@ -1,0 +1,54 @@
+# All tunable parameters (architecture.md §8). Loaded and validated by agent.config.
+mode: paper                    # backtest | paper | live
+capital: 100000
+risk:
+  risk_per_trade_pct: 0.5
+  max_position_pct: 20
+  leverage: 1                  # start without MIS leverage
+  max_daily_loss_pct: 2.0
+  max_consecutive_losses: 3
+  max_trades_per_day: 5
+  max_open_positions: 3
+  max_per_sector: 1
+  margin_buffer: 0.8
+  circuit_buffer_pct: 1.0
+screener:
+  universe: nifty500
+  min_price: 50
+  min_turnover_cr: 20
+  min_rvol: 2.0
+  min_atr_pct: 1.0
+  max_atr_pct: 5.0
+  watchlist_size: 10
+rescan:                        # v1.1 — §4.4b
+  enabled: false
+  rescan_start: "09:45"
+  rescan_end: "13:00"
+  rescan_interval_min: 15
+  rescan_top_n: 10             # per side (gainers and losers)
+  rescan_min_rvol: 2.0
+  rescan_max_move_pct: 7.0
+  rescan_max_vwap_atr: 2.0
+  rescan_ttl_min: 60
+  max_watchlist_size: 15
+  vwap_touch_pct: 0.2
+strategy:
+  opening_range_min: 15
+  entry_buffer_pct: 0.05
+  entry_timeout_s: 60
+  min_stop_pct: 0.3
+  max_stop_atr: 1.5
+  target_r: 2.0
+  breakeven_at_r: 1.0
+  last_entry: "14:30"
+  force_exit: "15:10"
+news:
+  enabled: true
+  veto_confidence: 70
+  model: claude-haiku-4-5
+  prompt_version: v1
+ops:
+  stale_tick_seconds: 20
+  max_tick_jump_pct: 5
+  reconcile_interval_s: 30
+  max_clock_drift_s: 2

@@ -350,6 +350,22 @@ qty         = min(qty, floor(equity × max_position_pct × leverage / entry))
 
 On breach of daily loss or consecutive losses → **auto kill switch** for the rest of the day (exits still allowed).
 
+**As built (phase 1, `risk/gate.py`):**
+- Every check runs and is journaled, not just the first failure; the first failure is the reason. Two checks beyond the
+  table: the stop must be on the correct side and ≥ `min_stop_pct` away, and no second entry in a symbol already held.
+- Fails closed: unknown sector (no NSE industry) or unknown circuit limits → reject. The backtester must supply
+  price bands.
+- Entry window is [open + `opening_range_min`, `last_entry`): 09:30:00 allowed, 14:30:00 not. Limits are strict at
+  the boundary (daily P&L exactly −2% → reject).
+- Sizing and % limits use **start-of-day equity**. A losing trade (net P&L < 0, costs included) extends the loss
+  streak; a breakeven or a win resets it.
+- **Position cap vs risk:** with `max_position_pct: 20` and `leverage: 1` the cap decides the size for any stop
+  tighter than 2.5%, so a typical ORB trade (0.3–1% stop) risks 0.06–0.2% of equity, not 0.5%. Each decision
+  records which one decided (`binding`) and the rupees actually at risk; set capital, risk and leverage together.
+- Exits (`check_exit`) are approved only if they reduce a held position, and are allowed with the kill switch on.
+- Kill switch (`ops/killswitch.py`): manual = the file `data/KILL` (stays until deleted); auto = recorded with the
+  day in `data/killswitch.json`, so a restart the same day stays killed.
+
 ### 4.8 Order manager (`execution/oms.py`)
 Owns the lifecycle of each trade as a state machine:
 
@@ -395,6 +411,14 @@ Telegram bot. Levels: `INFO` (fills, exits, daily summary), `WARN` (rejections, 
 ### 4.12 Scheduler (`ops/scheduler.py`)
 IST clock, NSE holiday calendar, special sessions (e.g. Muhurat trading). Verifies system clock drift against NTP at startup and refuses to trade if drift > 2 s.
 
+**Calendar (`ops/calendar.py`, built in phase 1):** `config/calendar/nse_holidays.csv` comes from NSE's holiday API
+(`scripts/build_nse_calendar.py`, which checks it against the candle store and writes nothing on a mismatch);
+`nse_special_sessions.csv` is hand-curated. NSE's list omits 2024-11-01 (Diwali; Muhurat only) and lists the
+2024-03-02 special session as a holiday, so the special-sessions file takes precedence. The agent trades normal
+sessions and `full` special sessions (e.g. Budget weekends 2025-02-01, 2026-02-01), not short DR-site or Muhurat
+sessions: 739 tradable days of the 742 in the candle store. A date past the holiday list's last year raises an
+error. Re-run the script each December and on any special announcement.
+
 ## 5. Daily timeline (IST)
 
 Step-by-step detail, including what you do at each point, is in [daily-runbook.md](daily-runbook.md).
@@ -433,6 +457,7 @@ Step-by-step detail, including what you do at each point, is in [daily-runbook.m
 stock-agent/
 ├── config/
 │   ├── settings.yaml          # all parameters below
+│   ├── calendar/              # NSE holidays (fetched) + special sessions (curated)
 │   └── universe/              # point-in-time index constituents, exclusion lists
 ├── src/agent/
 │   ├── broker/                # base.py, sim.py, fyers.py, fyers_auth.py
@@ -542,7 +567,7 @@ Historical news backtests are unreliable (timestamp quality, and the model may a
 | Phase | Deliverable | Exit criteria |
 |---|---|---|
 | **0. Spec & data** | This doc finalized; ~~broker chosen~~ (FYERS); ~~data source chosen~~ (FYERS history, §4.2b); ~~candle downloader + store~~ (§4.2b); ~~point-in-time Nifty 500 list with sectors~~ (§4.4) | ~~Pilot (20 stocks + NIFTY50 × 36 months) passes quality checks~~; ~~full universe loadable~~ (done 2026-09-23, §4.2b) |
-| **1. Core + risk** | Config, journal, risk gate, sizing, kill switch, calendar | Unit tests cover every risk rule and edge case |
+| **1. Core + risk** | ~~Config, journal, risk gate, sizing, kill switch, calendar~~ | ~~Unit tests cover every risk rule and edge case~~ (done 2026-09-24, 115 new tests) |
 | **2. Backtester** | `SimBroker`, cost model, ORB strategy, screener, reports | Reproducible backtest report; passes or fails the success criteria. **Stop and rethink the strategy if it fails.** |
 | **3. Broker + OMS** | `LiveBroker` adapter, OMS state machine, reconciler, alerts | Paper mode runs a full day unattended; kill-the-process test recovers correctly |
 | **4. Paper trading** | 2–4 weeks live paper | Success criteria met on paper; no unprotected positions |

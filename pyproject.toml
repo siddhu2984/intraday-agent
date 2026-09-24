@@ -12,6 +12,7 @@ dependencies = [
     "pandas",
     "pyarrow",
     "python-dotenv",
+    "pyyaml",
     "tzdata",  # zoneinfo data on Windows
 ]
 
@@ -20,3 +21,6 @@ dev = ["pytest"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"agent.journal" = ["schema.sql"]
