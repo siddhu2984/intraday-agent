@@ -1,0 +1,391 @@
+effective,change,symbol,company,source
+2023-04-28,exclude,BAJAJELEC,Bajaj Electricals Ltd.,ind_prs19042023_1
+2023-04-28,exclude,EDELWEISS,Edelweiss Financial Services Ltd.,ind_prs19042023_1
+2023-04-28,include,ERIS,Eris Lifesciences Ltd.,ind_prs19042023_1
+2023-04-28,include,NSLNISP,NMDC Steel Ltd.,ind_prs19042023_1
+2023-07-13,exclude,HDFC,Housing Development Finance Corporation Ltd.,ind_prs04072023
+2023-07-13,include,MANKIND,Mankind Pharma Ltd.,ind_prs04072023
+2023-09-29,exclude,BASF,BASF India Ltd.,ind_prs17082023
+2023-09-29,exclude,GARFIBRES,Garware Technical Fibres Ltd.,ind_prs17082023
+2023-09-29,exclude,GODREJAGRO,Godrej Agrovet Ltd.,ind_prs17082023
+2023-09-29,exclude,GREENPANEL,Greenpanel Industries Ltd.,ind_prs17082023
+2023-09-29,exclude,HIKAL,Hikal Ltd.,ind_prs17082023
+2023-09-29,exclude,HGS,Hinduja Global Solutions Ltd.,ind_prs17082023
+2023-09-29,exclude,IFBIND,IFB Industries Ltd.,ind_prs17082023
+2023-09-29,exclude,IBREALEST,Indiabulls Real Estate Ltd.,ind_prs17082023
+2023-09-29,exclude,JINDWORLD,Jindal Worldwide Ltd.,ind_prs17082023
+2023-09-29,exclude,KENNAMET,Kennametal India Ltd.,ind_prs17082023
+2023-09-29,exclude,RUSTOMJEE,Keystone Realtors Ltd.,ind_prs17082023
+2023-09-29,exclude,MAHLOG,Mahindra Logistics Ltd.,ind_prs17082023
+2023-09-29,exclude,NOCIL,NOCIL Ltd.,ind_prs17082023
+2023-09-29,exclude,TMB,Tamilnad Mercantile Bank Ltd.,ind_prs17082023
+2023-09-29,exclude,TCIEXP,TCI Express Ltd.,ind_prs17082023
+2023-09-29,exclude,TCNSBRANDS,TCNS Clothing Co. Ltd.,ind_prs17082023
+2023-09-29,exclude,TCI,Transport Corporation of India Ltd.,ind_prs17082023
+2023-09-29,exclude,UFLEX,UFLEX Ltd.,ind_prs17082023
+2023-09-29,include,ALLCARGO,Allcargo Logistics Ltd.,ind_prs17082023
+2023-09-29,include,ALOKINDS,Alok Industries Ltd.,ind_prs17082023
+2023-09-29,include,GILLETTE,Gillette India Ltd.,ind_prs17082023
+2023-09-29,include,ALIVUS,Glenmark Life Sciences Ltd.,ind_prs17082023
+2023-09-29,include,GPIL,Godawari Power & Ispat Ltd.,ind_prs17082023
+2023-09-29,include,IRCON,IRCON International Ltd.,ind_prs17082023
+2023-09-29,include,JINDALSAW,Jindal Saw Ltd.,ind_prs17082023
+2023-09-29,include,KAYNES,Kaynes Technology India Ltd.,ind_prs17082023
+2023-09-29,include,KIRLFER,Kirloskar Ferrous Industries Ltd.,ind_prs17082023
+2023-09-29,include,MINDACORP,Minda Corporation Ltd.,ind_prs17082023
+2023-09-29,include,PGHL,Procter & Gamble Health Ltd.,ind_prs17082023
+2023-09-29,include,SAFARI,Safari Industries (India) Ltd.,ind_prs17082023
+2023-09-29,include,SAREGAMA,Saregama India Ltd,ind_prs17082023
+2023-09-29,include,SFL,Sheela Foam Ltd.,ind_prs17082023
+2023-09-29,include,SYMPHONY,Symphony Ltd.,ind_prs17082023
+2023-09-29,include,SYRMA,Syrma SGS Technology Ltd.,ind_prs17082023
+2023-09-29,include,UJJIVANSFB,Ujjivan Small Finance Bank Ltd.,ind_prs17082023
+2023-09-29,include,USHAMART,Usha Martin Ltd.,ind_prs17082023
+2023-10-26,exclude,KIRLFER,Kirloskar Ferrous Industries Ltd.,ind_prs17102023
+2023-10-26,include,CONCORDBIO,Concord Biotech Ltd.,ind_prs17102023
+2024-03-28,exclude,AARTIDRUGS,Aarti Drugs Ltd.,ind_prs28022024
+2024-03-28,exclude,BCG,Brightcom Group Ltd.,ind_prs28022024
+2024-03-28,exclude,DELTACORP,Delta Corp Ltd.,ind_prs28022024
+2024-03-28,exclude,EPIGRAL,Epigral Ltd.,ind_prs28022024
+2024-03-28,exclude,GRINFRA,G R Infraprojects Ltd.,ind_prs28022024
+2024-03-28,exclude,GALAXYSURF,Galaxy Surfactants Ltd.,ind_prs28022024
+2024-03-28,exclude,GOCOLORS,Go Fashion (India) Ltd.,ind_prs28022024
+2024-03-28,exclude,GUJALKALI,Gujarat Alkalies & Chemicals Ltd.,ind_prs28022024
+2024-03-28,exclude,HLEGLAS,HLE Glascoat Ltd.,ind_prs28022024
+2024-03-28,exclude,INFIBEAM,Infibeam Avenues Ltd.,ind_prs28022024
+2024-03-28,exclude,INGERRAND,Ingersoll Rand (India) Ltd.,ind_prs28022024
+2024-03-28,exclude,JAMNAAUTO,Jamna Auto Industries Ltd.,ind_prs28022024
+2024-03-28,exclude,LAXMIMACH,Lakshmi Machine Works Ltd.,ind_prs28022024
+2024-03-28,exclude,LUXIND,Lux Industries Ltd.,ind_prs28022024
+2024-03-28,exclude,NAZARA,Nazara Technologies Ltd.,ind_prs28022024
+2024-03-28,exclude,ORIENTELEC,Orient Electric Ltd.,ind_prs28022024
+2024-03-28,exclude,PFIZER,Pfizer Ltd.,ind_prs28022024
+2024-03-28,exclude,POLYPLEX,Polyplex Corporation Ltd.,ind_prs28022024
+2024-03-28,exclude,PGHL,Procter & Gamble Health Ltd.,ind_prs28022024
+2024-03-28,exclude,RAIN,Rain Industries Ltd,ind_prs28022024
+2024-03-28,exclude,RALLIS,Rallis India Ltd.,ind_prs28022024
+2024-03-28,exclude,RELAXO,Relaxo Footwears Ltd.,ind_prs28022024
+2024-03-28,exclude,ROSSARI,Rossari Biotech Ltd.,ind_prs28022024
+2024-03-28,exclude,SHARDACROP,Sharda Cropchem Ltd.,ind_prs28022024
+2024-03-28,exclude,SFL,Sheela Foam Ltd.,ind_prs28022024
+2024-03-28,exclude,SHOPERSTOP,Shoppers Stop Ltd.,ind_prs28022024
+2024-03-28,exclude,SUPRAJIT,Suprajit Engineering Ltd.,ind_prs28022024
+2024-03-28,exclude,SYMPHONY,Symphony Ltd.,ind_prs28022024
+2024-03-28,exclude,TEAMLEASE,Teamlease Services Ltd.,ind_prs28022024
+2024-03-28,exclude,TTKPRESTIG,TTK Prestige Ltd.,ind_prs28022024
+2024-03-28,exclude,VINATIORGA,Vinati Organics Ltd.,ind_prs28022024
+2024-03-28,exclude,VMART,V-Mart Retail Ltd.,ind_prs28022024
+2024-03-28,exclude,ZYDUSWELL,Zydus Wellness Ltd.,ind_prs28022024
+2024-03-28,include,ACE,Action Construction Equipment Ltd.,ind_prs28022024
+2024-03-28,include,ANANDRATHI,Anand Rathi Wealth Ltd.,ind_prs28022024
+2024-03-28,include,ASTRAZEN,AstraZenca Pharma India Ltd.,ind_prs28022024
+2024-03-28,include,CAPLIPOINT,Caplin Point Laboratories Ltd.,ind_prs28022024
+2024-03-28,include,CELLO,Cello World Ltd.,ind_prs28022024
+2024-03-28,include,CHENNPETRO,Chennai Petroleum Corporation Ltd.,ind_prs28022024
+2024-03-28,include,DOMS,DOMS Industries Ltd.,ind_prs28022024
+2024-03-28,include,ELECON,Elecon Engineering Co. Ltd.,ind_prs28022024
+2024-03-28,include,GRSE,Garden Reach Shipbuilders & Engineers Ltd.,ind_prs28022024
+2024-03-28,include,GMDCLTD,Gujarat Mineral Development Corporation Ltd.,ind_prs28022024
+2024-03-28,include,HAPPYFORGE,Happy Forgings Ltd.,ind_prs28022024
+2024-03-28,include,HBLENGINE,HBL Power Systems Ltd.,ind_prs28022024
+2024-03-28,include,HSCL,Himadri Speciality Chemical Ltd.,ind_prs28022024
+2024-03-28,include,HONASA,Honasa Consumer Ltd.,ind_prs28022024
+2024-03-28,include,INOXWIND,Inox Wind Ltd.,ind_prs28022024
+2024-03-28,include,JAIBALAJI,Jai Balaji Industries Ltd.,ind_prs28022024
+2024-03-28,include,J&KBANK,Jammu & Kashmir Bank Ltd.,ind_prs28022024
+2024-03-28,include,JIOFIN,Jio Financial Services Ltd.,ind_prs28022024
+2024-03-28,include,JSWINFRA,JSW Infrastructure Ltd.,ind_prs28022024
+2024-03-28,include,JWL,Jupiter Wagons Ltd.,ind_prs28022024
+2024-03-28,include,LLOYDSME,Lloyds Metals And Energy Ltd.,ind_prs28022024
+2024-03-28,include,MAHSEAMLES,Maharashtra Seamless Ltd.,ind_prs28022024
+2024-03-28,include,NUVAMA,Nuvama Wealth Management Ltd.,ind_prs28022024
+2024-03-28,include,RRKABEL,R R Kabel Ltd.,ind_prs28022024
+2024-03-28,include,RAILTEL,Railtel Corporation Of India Ltd.,ind_prs28022024
+2024-03-28,include,RKFORGE,Ramkrishna Forgings Ltd.,ind_prs28022024
+2024-03-28,include,SBFC,SBFC Finance Ltd.,ind_prs28022024
+2024-03-28,include,SCHNEIDER,Schneider Electric Infrastructure Ltd.,ind_prs28022024
+2024-03-28,include,SIGNATURE,Signatureglobal (India) Ltd.,ind_prs28022024
+2024-03-28,include,TMB,Tamilnad Mercantile Bank Ltd.,ind_prs28022024
+2024-03-28,include,TATATECH,Tata Technologies Ltd.,ind_prs28022024
+2024-03-28,include,TITAGARH,Titagarh Rail Systems Ltd.,ind_prs28022024
+2024-03-28,include,TVSSCS,TVS Supply Chain Solutions Ltd.,ind_prs28022024
+2024-08-30,exclude,TATAMTRDVR,TATAMTRDVR,ind_prs23082024_1
+2024-09-30,exclude,AETHER,Aether Industries Ltd.,ind_prs23082024
+2024-09-30,exclude,ALLCARGO,Allcargo Logistics Ltd.,ind_prs23082024
+2024-09-30,exclude,ANURAS,Anupam Rasayan India Ltd.,ind_prs23082024
+2024-09-30,exclude,BORORENEW,Borosil Renewables Ltd.,ind_prs23082024
+2024-09-30,exclude,CSBBANK,CSB Bank Ltd.,ind_prs23082024
+2024-09-30,exclude,DCMSHRIRAM,DCM Shriram Ltd.,ind_prs23082024
+2024-09-30,exclude,EPL,EPL Ltd.,ind_prs23082024
+2024-09-30,exclude,FDC,FDC Ltd.,ind_prs23082024
+2024-09-30,exclude,ALIVUS,Glenmark Life Sciences Ltd.,ind_prs23082024
+2024-09-30,exclude,GMMPFAUDLR,GMM Pfaudler Ltd.,ind_prs23082024
+2024-09-30,exclude,HAPPYFORGE,Happy Forgings Ltd.,ind_prs23082024
+2024-09-30,exclude,INDIGOPNTS,Indigo Paints Ltd.,ind_prs23082024
+2024-09-30,exclude,JAIBALAJI,Jai Balaji Industries Ltd.,ind_prs23082024
+2024-09-30,exclude,JKPAPER,JK Paper Ltd.,ind_prs23082024
+2024-09-30,exclude,KRBL,KRBL Ltd.,ind_prs23082024
+2024-09-30,exclude,LXCHEM,Laxmi Organic Industries Ltd.,ind_prs23082024
+2024-09-30,exclude,MHRIL,Mahindra Holidays & Resorts India Ltd.,ind_prs23082024
+2024-09-30,exclude,MEDPLUS,Medplus Health Services Ltd.,ind_prs23082024
+2024-09-30,exclude,MTARTECH,MTAR Technologies Ltd.,ind_prs23082024
+2024-09-30,exclude,PRINCEPIPE,Prince Pipes and Fittings Ltd.,ind_prs23082024
+2024-09-30,exclude,RBA,Restaurant Brands Asia Ltd.,ind_prs23082024
+2024-09-30,exclude,SAFARI,Safari Industries (India) Ltd.,ind_prs23082024
+2024-09-30,exclude,STLTECH,Sterlite Technologies Ltd.,ind_prs23082024
+2024-09-30,exclude,SUNTECK,Sunteck Realty Ltd.,ind_prs23082024
+2024-09-30,exclude,TMB,Tamilnad Mercantile Bank Ltd.,ind_prs23082024
+2024-09-30,exclude,VAIBHAVGBL,Vaibhav Global Ltd.,ind_prs23082024
+2024-09-30,exclude,PRSMJOHNSN,PRSMJOHNSN,ind_prs25092024
+2024-09-30,include,AADHARHFC,Aadhar Housing Finance Ltd.,ind_prs23082024
+2024-09-30,include,ABSLAMC,Aditya Birla Sun Life AMC Ltd.,ind_prs23082024
+2024-09-30,include,ANANTRAJ,Anant Raj Ltd.,ind_prs23082024
+2024-09-30,include,BASF,BASF India Ltd.,ind_prs23082024
+2024-09-30,include,BHARTIHEXA,Bharti Hexacom Ltd.,ind_prs23082024
+2024-09-30,include,GRINFRA,G R Infraprojects Ltd.,ind_prs23082024
+2024-09-30,include,GVT&D,GE T&D India Ltd.,ind_prs23082024
+2024-09-30,include,GODIGIT,Go Digit General Insurance Ltd.,ind_prs23082024
+2024-09-30,include,GODREJAGRO,Godrej Agrovet Ltd.,ind_prs23082024
+2024-09-30,include,IFCI,IFCI Ltd.,ind_prs23082024
+2024-09-30,include,INDGN,Indegene Ltd.,ind_prs23082024
+2024-09-30,include,IREDA,Indian Renewable Energy Development Agency Ltd.,ind_prs23082024
+2024-09-30,include,INOXINDIA,INOX India Ltd.,ind_prs23082024
+2024-09-30,include,JPPOWER,Jaiprakash Power Ventures Ltd.,ind_prs23082024
+2024-09-30,include,JKTYRE,JK Tyre & Industries Ltd.,ind_prs23082024
+2024-09-30,include,JYOTICNC,Jyoti CNC Automation Ltd.,ind_prs23082024
+2024-09-30,include,KIRLOSBROS,Kirloskar Brothers Ltd.,ind_prs23082024
+2024-09-30,include,KIRLOSENG,Kirloskar Oil Eng Ltd.,ind_prs23082024
+2024-09-30,include,NETWEB,Netweb Technologies India Ltd.,ind_prs23082024
+2024-09-30,include,NEWGEN,Newgen Software Technologies Ltd.,ind_prs23082024
+2024-09-30,include,PFIZER,Pfizer Ltd.,ind_prs23082024
+2024-09-30,include,PTCIL,PTC Industries Ltd.,ind_prs23082024
+2024-09-30,include,SCI,Shipping Corporation of India Ltd.,ind_prs23082024
+2024-09-30,include,TBOTEK,TBO Tek Ltd.,ind_prs23082024
+2024-09-30,include,TECHNOE,Techno Electric & Engineering Company Ltd.,ind_prs23082024
+2024-09-30,include,DBREALTY,Valor Estate Ltd.,ind_prs23082024
+2024-09-30,include,VINATIORGA,Vinati Organics Ltd.,ind_prs23082024
+2024-10-10,exclude,IDFC,IDFC Ltd.,ind_prs04102024
+2024-10-10,include,EMCURE,Emcure Pharmaceuticals Ltd.,ind_prs04102024
+2024-10-16,exclude,TV18BRDCST,TV18 Broadcast Ltd.,ind_prs10102024
+2024-10-16,include,AKUMS,Akums Drugs and Pharmaceuticals Ltd.,ind_prs10102024
+2025-03-21,exclude,ISEC,ICICI Securities Ltd.,ind_prs17032025
+2025-03-21,include,RAYMONDLSL,Raymond Lifestyle Ltd.,ind_prs17032025
+2025-03-28,exclude,ACI,Archean Chemical Industries Ltd.,ind_prs21022025
+2025-03-28,exclude,AVANTIFEED,Avanti Feeds Ltd.,ind_prs21022025
+2025-03-28,exclude,BALAMINES,Balaji Amines Ltd.,ind_prs21022025
+2025-03-28,exclude,BIRLACORPN,Birla Corporation Ltd.,ind_prs21022025
+2025-03-28,exclude,CELLO,Cello World Ltd.,ind_prs21022025
+2025-03-28,exclude,CHEMPLASTS,Chemplast Sanmar Ltd.,ind_prs21022025
+2025-03-28,exclude,CIEINDIA,CIE Automotive India Ltd.,ind_prs21022025
+2025-03-28,exclude,EASEMYTRIP,Easy Trip Planners Ltd.,ind_prs21022025
+2025-03-28,exclude,EQUITASBNK,Equitas Small Finance Bank Ltd.,ind_prs21022025
+2025-03-28,exclude,FINEORG,Fine Organic Industries Ltd.,ind_prs21022025
+2025-03-28,exclude,GRINFRA,G R Infraprojects Ltd.,ind_prs21022025
+2025-03-28,exclude,GRINDWELL,Grindwell Norton Ltd.,ind_prs21022025
+2025-03-28,exclude,GAEL,Gujarat Ambuja Exports Ltd.,ind_prs21022025
+2025-03-28,exclude,GSFC,Gujarat State Fertilizers & Chemicals Ltd.,ind_prs21022025
+2025-03-28,exclude,JKLAKSHMI,JK Lakshmi Cement Ltd.,ind_prs21022025
+2025-03-28,exclude,KSB,KSB Ltd.,ind_prs21022025
+2025-03-28,exclude,MAHLIFE,Mahindra Lifespace Developers Ltd.,ind_prs21022025
+2025-03-28,exclude,METROBRAND,Metro Brands Ltd.,ind_prs21022025
+2025-03-28,exclude,NUVOCO,Nuvoco Vistas Corporation Ltd.,ind_prs21022025
+2025-03-28,exclude,PGHH,Procter & Gamble Hygiene & Health Care Ltd.,ind_prs21022025
+2025-03-28,exclude,RAJESHEXPO,Rajesh Exports Ltd.,ind_prs21022025
+2025-03-28,exclude,RATNAMANI,Ratnamani Metals & Tubes Ltd.,ind_prs21022025
+2025-03-28,exclude,SANOFI,Sanofi India Ltd.,ind_prs21022025
+2025-03-28,exclude,SPARC,Sun Pharma Advanced Research Company Ltd.,ind_prs21022025
+2025-03-28,exclude,SUNDRMFAST,Sundram Fasteners Ltd.,ind_prs21022025
+2025-03-28,exclude,TVSSCS,TVS Supply Chain Solutions Ltd.,ind_prs21022025
+2025-03-28,exclude,UJJIVANSFB,Ujjivan Small Finance Bank Ltd.,ind_prs21022025
+2025-03-28,exclude,VIPIND,V.I.P. Industries Ltd.,ind_prs21022025
+2025-03-28,exclude,VARROC,Varroc Engineering Ltd.,ind_prs21022025
+2025-03-28,exclude,VINATIORGA,Vinati Organics Ltd.,ind_prs21022025
+2025-03-28,include,ACMESOLAR,ACME Solar Holdings Ltd.,ind_prs21022025
+2025-03-28,include,AFCONS,Afcons Infrastructure Ltd.,ind_prs21022025
+2025-03-28,include,ALIVUS,Alivus Life Sciences Ltd.,ind_prs21022025
+2025-03-28,include,AIIL,Authum Investment & Infrastructure Ltd.,ind_prs21022025
+2025-03-28,include,BAJAJHFL,Bajaj Housing Finance Ltd.,ind_prs21022025
+2025-03-28,include,FIRSTCRY,Brainbees Solutions Ltd.,ind_prs21022025
+2025-03-28,include,DCMSHRIRAM,DCM Shriram Ltd.,ind_prs21022025
+2025-03-28,include,GRAVITA,Gravita India Ltd.,ind_prs21022025
+2025-03-28,include,HYUNDAI,Hyundai Motor India Ltd.,ind_prs21022025
+2025-03-28,include,IGIL,International Gemmological Institute (India) Ltd.,ind_prs21022025
+2025-03-28,include,IKS,Inventurus Knowledge Solutions Ltd.,ind_prs21022025
+2025-03-28,include,JSWHL,JSW Holdings Ltd.,ind_prs21022025
+2025-03-28,include,LTFOODS,LT Foods Ltd.,ind_prs21022025
+2025-03-28,include,NAVA,Nava Ltd.,ind_prs21022025
+2025-03-28,include,NEULANDLAB,Neuland Laboratories Ltd.,ind_prs21022025
+2025-03-28,include,NIVABUPA,Niva Bupa Health Insurance Company Ltd.,ind_prs21022025
+2025-03-28,include,NTPCGREEN,NTPC Green Energy Ltd.,ind_prs21022025
+2025-03-28,include,OLAELEC,Ola Electric Mobility Ltd.,ind_prs21022025
+2025-03-28,include,PGEL,PG Electroplast Ltd.,ind_prs21022025
+2025-03-28,include,PREMIERENE,Premier Energies Ltd.,ind_prs21022025
+2025-03-28,include,RPOWER,Reliance Power Ltd.,ind_prs21022025
+2025-03-28,include,SAGILITY,Sagility India Ltd.,ind_prs21022025
+2025-03-28,include,SAILIFE,Sai Life Sciences Ltd.,ind_prs21022025
+2025-03-28,include,SARDAEN,Sarda Energy and Minerals Ltd.,ind_prs21022025
+2025-03-28,include,SWIGGY,Swiggy Ltd.,ind_prs21022025
+2025-03-28,include,TARIL,Transformers And Rectifiers (India) Ltd.,ind_prs21022025
+2025-03-28,include,VMM,Vishal Mega Mart Ltd.,ind_prs21022025
+2025-03-28,include,WAAREEENER,Waaree Energies Ltd.,ind_prs21022025
+2025-03-28,include,WOCKPHARMA,Wockhardt Ltd.,ind_prs21022025
+2025-03-28,include,ZENTEC,Zen Technologies Ltd.,ind_prs21022025
+2025-04-11,exclude,QUESS,Quess Corp Ltd.,ind_prs04042025_2
+2025-04-11,include,SUNDRMFAST,Sundram Fasteners Ltd.,ind_prs04042025_2
+2025-09-23,exclude,PEL,Piramal Enterprises Ltd.,ind_prs15092025_1
+2025-09-23,include,RELINFRA,Reliance Infrastructure Ltd.,ind_prs15092025_1
+2025-09-30,exclude,ALIVUS,Alivus Life Sciences Ltd.,ind_prs22082025
+2025-09-30,exclude,GNFC,Gujarat Narmada Valley Fertilizers and Chemicals Ltd.,ind_prs22082025
+2025-09-30,exclude,GPPL,Gujarat Pipavav Port Ltd.,ind_prs22082025
+2025-09-30,exclude,JSWHL,JSW Holdings Ltd.,ind_prs22082025
+2025-09-30,exclude,JUSTDIAL,Justdial Ltd.,ind_prs22082025
+2025-09-30,exclude,KANSAINER,Kansai Nerolac Paints Ltd.,ind_prs22082025
+2025-09-30,exclude,KNRCON,KNR Constructions Ltd.,ind_prs22082025
+2025-09-30,exclude,MASTEK,Mastek Ltd.,ind_prs22082025
+2025-09-30,exclude,NETWORK18,Network18 Media & Investments Ltd.,ind_prs22082025
+2025-09-30,exclude,PNCINFRA,PNC Infratech Ltd.,ind_prs22082025
+2025-09-30,exclude,RTNINDIA,RattanIndia Enterprises Ltd.,ind_prs22082025
+2025-09-30,exclude,RAYMONDLSL,Raymond Lifestyle Ltd.,ind_prs22082025
+2025-09-30,exclude,RAYMOND,Raymond Ltd.,ind_prs22082025
+2025-09-30,exclude,ROUTE,Route Mobile Ltd.,ind_prs22082025
+2025-09-30,exclude,RENUKA,Shree Renuka Sugars Ltd.,ind_prs22082025
+2025-09-30,exclude,SWSOLAR,Sterling and Wilson Renewable Energy Ltd.,ind_prs22082025
+2025-09-30,exclude,TANLA,Tanla Platforms Ltd.,ind_prs22082025
+2025-09-30,exclude,WESTLIFE,Westlife Foodworld Ltd.,ind_prs22082025
+2025-09-30,include,ABLBL,Aditya Birla Lifestyle Brands Ltd.,ind_prs22082025
+2025-09-30,include,AEGISVOPAK,Aegis Vopak Terminals Ltd.,ind_prs22082025
+2025-09-30,include,JSWDULUX,Akzo Nobel India Ltd.,ind_prs22082025
+2025-09-30,include,ATHERENERG,Ather Energy Ltd.,ind_prs22082025
+2025-09-30,include,BLUEJET,Blue Jet Healthcare Ltd.,ind_prs22082025
+2025-09-30,include,CHOICEIN,Choice International Ltd.,ind_prs22082025
+2025-09-30,include,AGARWALEYE,Dr. Agarwal's Health Care Ltd.,ind_prs22082025
+2025-09-30,include,FORCEMOT,Force Motors Ltd.,ind_prs22082025
+2025-09-30,include,HEXT,Hexaware Technologies Ltd.,ind_prs22082025
+2025-09-30,include,ITCHOTELS,ITC Hotels Ltd.,ind_prs22082025
+2025-09-30,include,KSB,KSB Ltd.,ind_prs22082025
+2025-09-30,include,MAHSCOOTER,Maharashtra Scooters Ltd.,ind_prs22082025
+2025-09-30,include,NUVOCO,Nuvoco Vistas Corporation Ltd.,ind_prs22082025
+2025-09-30,include,ONESOURCE,Onesource Specialty Pharma Ltd.,ind_prs22082025
+2025-09-30,include,PGHH,Procter & Gamble Hygiene & Health Care Ltd.,ind_prs22082025
+2025-09-30,include,THELEELA,Schloss Bangalore Ltd.,ind_prs22082025
+2025-09-30,include,ENRIN,Siemens Energy India Ltd.,ind_prs22082025
+2025-09-30,include,VENTIVE,Ventive Hospitality Ltd.,ind_prs22082025
+2025-12-31,exclude,SKFINDIA,SKF India Ltd.,ind_prs11122025
+2025-12-31,include,JSWCEMENT,JSW Cement Ltd.,ind_prs11122025
+2026-03-30,exclude,AKUMS,Akums Drugs and Pharmaceuticals Ltd.,ind_prs23022026
+2026-03-30,exclude,APLLTD,Alembic Pharmaceuticals Ltd.,ind_prs23022026
+2026-03-30,exclude,ALKYLAMINE,Alkyl Amines Chemicals Ltd.,ind_prs23022026
+2026-03-30,exclude,ALOKINDS,Alok Industries Ltd.,ind_prs23022026
+2026-03-30,exclude,ASTRAZEN,AstraZenca Pharma India Ltd.,ind_prs23022026
+2026-03-30,exclude,BASF,BASF India Ltd.,ind_prs23022026
+2026-03-30,exclude,CAMPUS,Campus Activewear Ltd.,ind_prs23022026
+2026-03-30,exclude,CENTURYPLY,Century Plyboards (India) Ltd.,ind_prs23022026
+2026-03-30,exclude,CERA,Cera Sanitaryware Ltd,ind_prs23022026
+2026-03-30,exclude,AGARWALEYE,Dr. Agarwal's Health Care Ltd.,ind_prs23022026
+2026-03-30,exclude,FINPIPE,Finolex Industries Ltd.,ind_prs23022026
+2026-03-30,exclude,GODREJAGRO,Godrej Agrovet Ltd.,ind_prs23022026
+2026-03-30,exclude,GUJGASLTD,Gujarat Gas Ltd.,ind_prs23022026
+2026-03-30,exclude,HAPPSTMNDS,Happiest Minds Technologies Ltd.,ind_prs23022026
+2026-03-30,exclude,INOXINDIA,INOX India Ltd.,ind_prs23022026
+2026-03-30,exclude,JYOTHYLAB,Jyothy Labs Ltd.,ind_prs23022026
+2026-03-30,exclude,KIRLOSBROS,Kirloskar Brothers Ltd.,ind_prs23022026
+2026-03-30,exclude,KSB,KSB Ltd.,ind_prs23022026
+2026-03-30,exclude,MAHSCOOTER,Maharashtra Scooters Ltd.,ind_prs23022026
+2026-03-30,exclude,MAHSEAMLES,Maharashtra Seamless Ltd.,ind_prs23022026
+2026-03-30,exclude,METROPOLIS,Metropolis Healthcare Ltd.,ind_prs23022026
+2026-03-30,exclude,PRAJIND,Praj Industries Ltd.,ind_prs23022026
+2026-03-30,exclude,PGHH,Procter & Gamble Hygiene & Health Care Ltd.,ind_prs23022026
+2026-03-30,exclude,RCF,Rashtriya Chemicals & Fertilizers Ltd.,ind_prs23022026
+2026-03-30,exclude,RELINFRA,Reliance Infrastructure Ltd.,ind_prs23022026
+2026-03-30,exclude,SUNDRMFAST,Sundram Fasteners Ltd.,ind_prs23022026
+2026-03-30,exclude,TRIVENI,Triveni Engineering & Industries Ltd.,ind_prs23022026
+2026-03-30,exclude,DBREALTY,Valor Estate Ltd.,ind_prs23022026
+2026-03-30,exclude,MANYAVAR,Vedant Fashions Ltd.,ind_prs23022026
+2026-03-30,exclude,VENTIVE,Ventive Hospitality Ltd.,ind_prs23022026
+2026-03-30,exclude,VGUARD,V-Guard Industries Ltd.,ind_prs23022026
+2026-03-30,include,ACUTAAS,Acutaas Chemicals Ltd.,ind_prs23022026
+2026-03-30,include,CPPLUS,Aditya Infotech Ltd.,ind_prs23022026
+2026-03-30,include,ABDL,Allied Blenders and Distillers Ltd.,ind_prs23022026
+2026-03-30,include,ANTHEM,Anthem Biosciences Ltd.,ind_prs23022026
+2026-03-30,include,ANURAS,Anupam Rasayan India Ltd.,ind_prs23022026
+2026-03-30,include,BELRISE,Belrise Industries Ltd.,ind_prs23022026
+2026-03-30,include,GROWW,Billionbrains Garage Ventures Ltd.,ind_prs23022026
+2026-03-30,include,CANHLIFE,Canara HSBC Life Insurance Company Ltd.,ind_prs23022026
+2026-03-30,include,CARTRADE,Cartrade Tech Ltd.,ind_prs23022026
+2026-03-30,include,CEMPRO,Cemindia Projects Ltd.,ind_prs23022026
+2026-03-30,include,EMMVEE,Emmvee Photovoltaic Power Ltd.,ind_prs23022026
+2026-03-30,include,GABRIEL,Gabriel India Ltd.,ind_prs23022026
+2026-03-30,include,GALLANTT,Gallantt Ispat Ltd.,ind_prs23022026
+2026-03-30,include,HDBFS,HDB Financial Services Ltd.,ind_prs23022026
+2026-03-30,include,ICICIAMC,ICICI Prudential Asset Management Company Ltd.,ind_prs23022026
+2026-03-30,include,JAINREC,Jain Resource Recycling Ltd.,ind_prs23022026
+2026-03-30,include,LENSKART,Lenskart Solutions Ltd.,ind_prs23022026
+2026-03-30,include,LGEINDIA,LG Electronics India Ltd.,ind_prs23022026
+2026-03-30,include,MEESHO,Meesho Ltd.,ind_prs23022026
+2026-03-30,include,PARADEEP,Paradeep Phosphates Ltd.,ind_prs23022026
+2026-03-30,include,PWL,Physicswallah Ltd.,ind_prs23022026
+2026-03-30,include,PINELABS,Pine Labs Ltd.,ind_prs23022026
+2026-03-30,include,PIRAMALFIN,Piramal Finance Ltd.,ind_prs23022026
+2026-03-30,include,SPLPETRO,Supreme Petrochem Ltd.,ind_prs23022026
+2026-03-30,include,TATACAP,Tata Capital Ltd.,ind_prs23022026
+2026-03-30,include,TMCV,Tata Motors Ltd.,ind_prs23022026
+2026-03-30,include,TEGA,Tega Industries Ltd.,ind_prs23022026
+2026-03-30,include,TENNIND,Tenneco Clean Air India Ltd.,ind_prs23022026
+2026-03-30,include,TRAVELFOOD,Travel Food Services Ltd.,ind_prs23022026
+2026-03-30,include,URBANCO,Urban Company Ltd.,ind_prs23022026
+2026-03-30,include,ZYDUSWELL,Zydus Wellness Ltd.,ind_prs23022026
+2026-05-12,exclude,GSPL,Gujarat State Petronet Ltd.,ind_prs04052026
+2026-05-12,include,CIEINDIA,CIE Automotive India Ltd.,ind_prs04052026
+2026-07-17,exclude,JBCHEPHARM,J.B. Chemicals & Pharmaceuticals Ltd.,ind_prs13072026_1
+2026-07-17,include,PFOCUS,Prime Focus Ltd.,ind_prs13072026_1
+2026-09-30,exclude,3MINDIA,3M India Ltd.,ind_prs10082026
+2026-09-30,exclude,ABFRL,Aditya Birla Fashion and Retail Ltd.,ind_prs10082026
+2026-09-30,exclude,ABLBL,Aditya Birla Lifestyle Brands Ltd.,ind_prs10082026
+2026-09-30,exclude,BAYERCROP,Bayer Cropscience Ltd.,ind_prs10082026
+2026-09-30,exclude,BIKAJI,Bikaji Foods International Ltd.,ind_prs10082026
+2026-09-30,exclude,BLUEDART,Blue Dart Express Ltd.,ind_prs10082026
+2026-09-30,exclude,BLUEJET,Blue Jet Healthcare Ltd.,ind_prs10082026
+2026-09-30,exclude,BBTC,Bombay Burmah Trading Corporation Ltd.,ind_prs10082026
+2026-09-30,exclude,MAPMYINDIA,C.E. Info Systems Ltd.,ind_prs10082026
+2026-09-30,exclude,CHALET,Chalet Hotels Ltd.,ind_prs10082026
+2026-09-30,exclude,DCMSHRIRAM,DCM Shriram Ltd.,ind_prs10082026
+2026-09-30,exclude,ERIS,Eris Lifesciences Ltd.,ind_prs10082026
+2026-09-30,exclude,GODIGIT,Go Digit General Insurance Ltd.,ind_prs10082026
+2026-09-30,exclude,INDGN,Indegene Ltd.,ind_prs10082026
+2026-09-30,exclude,JSWDULUX,JSW Dulux Ltd.,ind_prs10082026
+2026-09-30,exclude,JUBLPHARMA,Jubilant Pharmova Ltd.,ind_prs10082026
+2026-09-30,exclude,LATENTVIEW,Latent View Analytics Ltd.,ind_prs10082026
+2026-09-30,exclude,THELEELA,Leela Palaces Hotels & Resorts Ltd.,ind_prs10082026
+2026-09-30,exclude,NEWGEN,Newgen Software Technologies Ltd.,ind_prs10082026
+2026-09-30,exclude,NIVABUPA,Niva Bupa Health Insurance Company Ltd.,ind_prs10082026
+2026-09-30,exclude,PFIZER,Pfizer Ltd.,ind_prs10082026
+2026-09-30,exclude,SAPPHIRE,Sapphire Foods India Ltd.,ind_prs10082026
+2026-09-30,exclude,SAREGAMA,Saregama India Ltd,ind_prs10082026
+2026-09-30,exclude,SBFC,SBFC Finance Ltd.,ind_prs10082026
+2026-09-30,exclude,SONATSOFTW,Sonata Software Ltd.,ind_prs10082026
+2026-09-30,exclude,SPLPETRO,Supreme Petrochem Ltd.,ind_prs10082026
+2026-09-30,exclude,TRAVELFOOD,Travel Food Services Ltd.,ind_prs10082026
+2026-09-30,include,AETHER,Aether Industries Ltd.,ind_prs10082026
+2026-09-30,include,AVANTIFEED,Avanti Feeds Ltd.,ind_prs10082026
+2026-09-30,include,AZAD,Azad Engineering Ltd.,ind_prs10082026
+2026-09-30,include,BHARATCOAL,Bharat Coking Coal Ltd.,ind_prs10082026
+2026-09-30,include,BBOX,Black Box Ltd.,ind_prs10082026
+2026-09-30,include,CMPDI,Central Mine Planning & Design Institute Ltd.,ind_prs10082026
+2026-09-30,include,CLEANMAX,Clean Max Enviro Energy Solutions Ltd.,ind_prs10082026
+2026-09-30,include,CUPID,Cupid Ltd.,ind_prs10082026
+2026-09-30,include,FRACTAL,Fractal Analytics Ltd.,ind_prs10082026
+2026-09-30,include,INOXINDIA,INOX India Ltd.,ind_prs10082026
+2026-09-30,include,KIRLOSBROS,Kirloskar Brothers Ltd.,ind_prs10082026
+2026-09-30,include,KSB,KSB Ltd.,ind_prs10082026
+2026-09-30,include,MTARTECH,MTAR Technologies Ltd.,ind_prs10082026
+2026-09-30,include,PRIVISCL,Privi Speciality Chemicals Ltd.,ind_prs10082026
+2026-09-30,include,RUBICON,Rubicon Research Ltd.,ind_prs10082026
+2026-09-30,include,SANSERA,Sansera Engineering Ltd.,ind_prs10082026
+2026-09-30,include,SHRIPISTON,SPR Auto Technologies Ltd.,ind_prs10082026
+2026-09-30,include,STLTECH,Sterlite Technologies Ltd.,ind_prs10082026
+2026-09-30,include,TDPOWERSYS,TD Power Systems Ltd.,ind_prs10082026
+2026-09-30,include,THANGAMAYL,Thangamayil Jewellery Ltd.,ind_prs10082026
+2026-09-30,include,VAML,Vedanta Aluminium Metal Ltd.,ind_prs10082026
+2026-09-30,include,VISL,Vedanta Iron and Steel Ltd.,ind_prs10082026
+2026-09-30,include,VOGL,Vedanta Oil and Gas Ltd.,ind_prs10082026
+2026-09-30,include,VEDPOWER,Vedanta Power Ltd.,ind_prs10082026

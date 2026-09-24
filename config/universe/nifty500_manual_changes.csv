@@ -1,0 +1,6 @@
+effective,change,symbol,source,note
+2024-03-28,revoke_exclude,VGUARD,ind_prs19032024,Exclusion announced 2024-02-28 revoked (table-format release)
+2024-03-28,revoke_include,IREDA,ind_prs19032024,Inclusion announced 2024-02-28 revoked (table-format release)
+2024-08-30,exclude,TATAMTRDVR,ind_prs23082024_1,DVR shares cancelled; excluded without replacement
+2024-09-30,revoke_exclude,IDEA,ind_prs25092024,Exclusion announced 2024-08-23 revoked after impact-cost recalculation
+2024-09-30,exclude,PRSMJOHNSN,ind_prs25092024,Excluded in place of IDEA (table-format release)

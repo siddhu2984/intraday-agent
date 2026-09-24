@@ -184,6 +184,25 @@ the live pre-open quote, not history.
   special pre-open on 2025-01-06 (351 bars).
 - 1 fail: HINDUNILVR 2025-12-05 (demerger day) — open 1.3% outside the bar's range, adjusted inconsistently.
 
+**Full result** (Nifty 500 history: 646 stocks + NIFTY50, same window; downloaded 2026-09-23 in ~70 min, 0 failed
+chunks; 4.7 GB): 455,456 stock-days — 449,506 ok (98.7%), 5,893 warn, 57 fail.
+- Short days (2,503 across 311 stocks) are mostly a few minutes (median 2 bars) in illiquid names
+  (RUSTOMJEE, JSWHL, PFOCUS, GALLANTT…); the Stage A turnover filter is expected to drop most of these.
+- The Oct 2023–Feb 2024 FYERS quirk shows up at scale: 2,553 small OHLC-gap warnings and most of the 57 fails,
+  plus days with ~60–80 stocks short (e.g. 2023-11-02).
+- **Check against NSE's official bhavcopy:** on 2026-09-15 our daily bars match NSE exactly (O/H/L/C/volume,
+  645/645 stocks). On 2024-03-15, 99.6% match exactly; the rest differ by a corporate-action factor (FYERS adjusts
+  retroactively — splits/bonuses, also rights issues and demergers, e.g. ADANIENT 1.03, HINDUNILVR 1.016). The
+  official **open equals the daily bar's open** for every stock, confirming the daily open is the pre-open auction
+  price (usable for the Stage A gap). Σ 1-min volume is typically ~0.5–1% below official volume (pre-open and
+  block-deal volume are not in 1-min bars).
+- **History lost at a rename:** for some renamed stocks FYERS serves history under the new ticker only from the
+  rename, and the old ticker is invalid: HEGAM (ex-HEG, 719 of 742 days missing), GUJENERGY (ex-GUJGASLTD, all
+  621 member days), LMW (ex-LAXMIMACH, 126), JSWDULUX (ex-AKZOINDIA, 121), WELSPUNLIV (ex-WELSPUNIND, 54). Other
+  renames kept full history (TATAMOTORS → TMPV, LTIM → LTM). These stocks are absent on the missing days.
+- RELINFRA's missing days (22, Dec 2025–Jan 2026) are genuine non-trading days (periodic call auction under
+  surveillance), not a download gap.
+
 ### 4.3 News adapter (`news/`)
 - Fetches headlines (text, timestamp, source, tickers) from an Indian-market news API. No scraping.
 - Pre-market pull for the universe; incremental pulls only for watchlist symbols during the session.
@@ -199,6 +218,35 @@ Two stages, because most inputs don't exist before 09:15.
 
 Watchlist ranking: Stage B survivors are ranked by RVOL, ties broken by |RS|. A worked example of the
 full decision path is in [stock-selection.md](stock-selection.md).
+
+**Point-in-time universe** (`config/universe/nifty500_members.csv`, built by `scripts/build_nifty500_history.py`):
+one row per membership interval — `symbol, isin, company, industry, fyers_symbol, start, end`; a stock is in the
+universe on day *d* if `start ≤ d < end` (empty `end` = still a member). `industry` is NSE's classification and
+serves as the sector for the risk gate's `max_per_sector`.
+
+| Source | What it gives |
+|---|---|
+| 9 archived copies of NSE's constituent CSV (Internet Archive, Apr 2023 → Sep 2026) + today's | Membership on those dates, industry |
+| 21 NSE Indices press releases (`config/universe/nifty500_sources.txt`) | Every change with its effective date: 7 semi-annual reviews + replacements for mergers, demergers, delistings |
+| `nifty500_manual_changes.csv` | 5 changes from releases whose tables don't parse (revocations, an exclusion without replacement), each citing its release |
+| NSE `EQUITY_L.csv`, FYERS symbol master | Names/ISINs of stocks never seen in a snapshot; today's FYERS ticker |
+
+- **Verification:** replaying all changes from the Apr 2023 snapshot reproduces **every** later snapshot exactly;
+  the script refuses to write output otherwise.
+- **Identity:** a stock is its linked ISINs + symbols (a split changes the ISIN, a rename the symbol, e.g.
+  TATAMOTORS → TMPV). Release rows are matched by company name against the snapshot nearest in time, because
+  names get reused ("Tata Motors Ltd." is a different company after the 2025 demerger).
+- **Result (2026-09-23):** 655 stocks, 670 intervals; 652 in the 3-year backtest window; 15 left and re-entered.
+- **Survivorship gap:** 8 in-window stocks have no FYERS history because they were merged/delisted (GSPL, IDFC,
+  ISEC, JBCHEPHARM, PEL, TATAMTRDVR, TCNSBRANDS, TV18BRDCST — FYERS: "Invalid symbol"). They drop out of the
+  backtest universe. GSPL, JBCHEPHARM, TV18BRDCST and TATAMTRDVR left via amalgamation/capital schemes (per their
+  releases), and IDFC, ISEC, TCNSBRANDS, PEL via mergers into group companies — not failures, so the bias is small.
+- **Trade-for-trade stocks:** those now in the BE/BZ series (HFCL, STLTECH, …) use that FYERS ticker, whose history
+  also covers their EQ years. Stage A drops T2T stocks on the day anyway.
+- **Missing industry:** 5 stocks that entered and left between snapshots (CELLO, HAPPYFORGE, JAIBALAJI, KIRLFER,
+  TVSSCS) have no industry yet.
+- **Upkeep:** after each semi-annual review (announced ~late Feb / late Aug) and any replacement, add the release id
+  to `nifty500_sources.txt` and re-run the script.
 
 Note: Stage A's gap ranking is effectively the **pre-open top gainers/losers**, and Stage B's RS is the
 top gainers/losers **net of the market move**. Stocks that only become gainers later are handled by §4.4b.
@@ -493,7 +541,7 @@ Historical news backtests are unreliable (timestamp quality, and the model may a
 
 | Phase | Deliverable | Exit criteria |
 |---|---|---|
-| **0. Spec & data** | This doc finalized; ~~broker chosen~~ (FYERS); ~~data source chosen~~ (FYERS history, §4.2b); candle downloader + store; point-in-time Nifty 500 list with sectors | ~~Pilot (20 stocks + NIFTY50 × 36 months) passes quality checks~~ (done, §4.2b); then the full universe loadable |
+| **0. Spec & data** | This doc finalized; ~~broker chosen~~ (FYERS); ~~data source chosen~~ (FYERS history, §4.2b); ~~candle downloader + store~~ (§4.2b); ~~point-in-time Nifty 500 list with sectors~~ (§4.4) | ~~Pilot (20 stocks + NIFTY50 × 36 months) passes quality checks~~; ~~full universe loadable~~ (done 2026-09-23, §4.2b) |
 | **1. Core + risk** | Config, journal, risk gate, sizing, kill switch, calendar | Unit tests cover every risk rule and edge case |
 | **2. Backtester** | `SimBroker`, cost model, ORB strategy, screener, reports | Reproducible backtest report; passes or fails the success criteria. **Stop and rethink the strategy if it fails.** |
 | **3. Broker + OMS** | `LiveBroker` adapter, OMS state machine, reconciler, alerts | Paper mode runs a full day unattended; kill-the-process test recovers correctly |

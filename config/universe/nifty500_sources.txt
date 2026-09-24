@@ -1,0 +1,34 @@
+# Sources for scripts/build_nifty500_history.py. Lines: "snapshot <wayback timestamp> <original url>" or
+# "release <niftyindices press release id>". Snapshots are archived copies of NSE's Nifty 500 constituent list;
+# releases are NSE Indices press releases that change Nifty 500 membership.
+# Twice a year (Feb/Aug reviews) add the new review release and re-run the script.
+snapshot 20230404164710 https://archives.nseindia.com/content/indices/ind_nifty500list.csv
+snapshot 20240207233933 https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
+snapshot 20240226224931 https://archives.nseindia.com/content/indices/ind_nifty500list.csv
+snapshot 20250616113621 https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
+snapshot 20250815235304 https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
+snapshot 20260107050129 https://niftyindices.com/IndexConstituent/ind_nifty500list.csv
+snapshot 20260502114023 https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
+snapshot 20260827161651 https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
+snapshot 20260921150535 https://www.niftyindices.com/IndexConstituent/ind_nifty500list.csv
+release ind_prs19042023_1
+release ind_prs04072023
+release ind_prs17082023
+release ind_prs17102023
+release ind_prs28022024
+release ind_prs19032024
+release ind_prs23082024
+release ind_prs23082024_1
+release ind_prs25092024
+release ind_prs04102024
+release ind_prs10102024
+release ind_prs21022025
+release ind_prs17032025
+release ind_prs04042025_2
+release ind_prs22082025
+release ind_prs15092025_1
+release ind_prs11122025
+release ind_prs23022026
+release ind_prs04052026
+release ind_prs13072026_1
+release ind_prs10082026

@@ -64,7 +64,13 @@ def last_final_session(now: datetime) -> date:
 
 
 def read_universe(path: Path) -> list[str]:
-    symbols = pd.read_csv(path)["symbol"].dropna().str.strip().tolist()
+    """FYERS symbols from a CSV's 'fyers_symbol' column (e.g. nifty500_members.csv) or 'symbol' column (pilot.csv).
+
+    Rows without a FYERS symbol (delisted stocks FYERS has no history for) are skipped; the index is always added.
+    """
+    df = pd.read_csv(path, dtype=str)
+    column = "fyers_symbol" if "fyers_symbol" in df.columns else "symbol"
+    symbols = list(dict.fromkeys(df[column].dropna().str.strip()))
     return symbols if INDEX_SYMBOL in symbols else symbols + [INDEX_SYMBOL]
 
 
