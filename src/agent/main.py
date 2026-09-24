@@ -97,6 +97,38 @@ def backtest(args) -> int:
     return 0
 
 
+def news_study(args) -> int:
+    from datetime import timedelta
+
+    from agent.news.store import NewsStore
+    from agent.research.event_study import IGNORED_GROUPS, assign_sessions, pick_events, run_study
+    from agent.research.study_report import render
+
+    settings = load_settings(overrides=args.set)
+    start, end = args.start or settings.backtest.start, args.end or settings.backtest.end
+    calendar = NseCalendar.load()
+    store = CandleStore()
+    stored = set(store.days())
+    store.close()
+    days = [d for d in calendar.trading_days(start, end) if d in stored]
+    features = load_features(start, end, settings.screener.lookback_days)
+    filings = NewsStore().read(start - timedelta(days=7), end)
+    filings = assign_sessions(filings[~filings["group"].isin(IGNORED_GROUPS)], calendar)
+    events = pick_events(filings[filings["session_day"].isin(set(days))])
+    print(f"{len(days)} days; {len(events):,} events", flush=True)
+
+    t0 = time.time()
+    df = run_study(events, features, days, args.workers)
+    print(f"measured {len(df):,} rows in {time.time() - t0:.0f} s", flush=True)
+    run_id = new_run_id(datetime.now(IST))
+    out = PROJECT_ROOT / "data" / "research" / "news_study" / run_id
+    out.mkdir(parents=True)
+    df.to_parquet(out / "events.parquet", index=False)
+    (out / "report.md").write_text(render(run_id, df, days, settings), encoding="utf-8")
+    print(f"report: {out / 'report.md'}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="agent")
     sub = parser.add_subparsers(dest="mode", required=True)
@@ -107,8 +139,13 @@ def main(argv: list[str] | None = None) -> int:
     bt.add_argument("--set", action="append", default=[], metavar="KEY=VALUE", help="config override, repeatable")
     bt.add_argument("--no-baseline", action="store_true", help="skip the random-entry baseline")
     bt.add_argument("--note", default="", help="free text stored with the run")
+    ns = sub.add_parser("news-study", help="event study: price follow-through after NSE filings")
+    ns.add_argument("--start", type=date.fromisoformat)
+    ns.add_argument("--end", type=date.fromisoformat)
+    ns.add_argument("--workers", type=int, default=None)
+    ns.add_argument("--set", action="append", default=[], metavar="KEY=VALUE")
     args = parser.parse_args(argv)
-    return backtest(args)
+    return news_study(args) if args.mode == "news-study" else backtest(args)
 
 
 if __name__ == "__main__":

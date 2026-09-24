@@ -204,9 +204,16 @@ chunks; 4.7 GB): 455,456 stock-days — 449,506 ok (98.7%), 5,893 warn, 57 fail.
   surveillance), not a download gap.
 
 ### 4.3 News adapter (`news/`)
-- Fetches headlines (text, timestamp, source, tickers) from an Indian-market news API. No scraping.
-- Pre-market pull for the universe; incremental pulls only for watchlist symbols during the session.
-- Deduplicates by headline hash.
+- **Source (decided 2026-09-25): NSE company filings.** `nseindia.com/api/corporate-announcements` gives full
+  history and today's filings — seq_id, ISIN, NSE category, summary, PDF link, and the exchange's broadcast time
+  (`exchdisstime`, 0–7 s after submission) which we treat as the public time. The RSS feed
+  `Online_announcements.xml` is the live fallback. BSE and paid headline APIs: not used yet.
+- `news/nse.py` client (month requests; finished months cached), `news/store.py` (`data/news/filings_YYYY-MM.parquet`,
+  upsert by seq_id; an API row replaces the RSS row of the same PDF), `news/classify.py` + `config/news/categories.yaml`
+  (NSE category → group, keyword rules for catch-all categories), `news/poll.py` (`python -m agent.news poll`:
+  every 30 s, 08:30–15:40 on trading days, logs each new material member filing and its delay).
+- Backfill: `python -m agent.news backfill` — ~540k filings Sep 2023 → Sep 2026, 187k for Nifty 500 members.
+- Caveat: the JSON API is unofficial (serves NSE's website) and may throttle or change.
 
 ### 4.4 Screener (`strategy/screener.py`)
 Two stages, because most inputs don't exist before 09:15.
@@ -591,6 +598,24 @@ Directions worth testing next (each as its own backtest, tuned on in-sample only
 market-regime filter; entries only 09:30–11:00; wider targets / trailing exit instead of 2R + breakeven at 1R;
 not counting breakeven exits toward the loss streak; a costlier-to-trade-less design (fewer, larger-R trades).
 
+### 9.2 News event study (2026-09-25) — no tradeable follow-through
+
+`python -m agent.main news-study`: every material member filing 2023-10-25 → 2026-09-23 (10,933 session events,
+26,269 overnight) vs 673k no-news stock-days matched on reaction size. Session trades follow the first 5 minutes'
+reaction; overnight trades follow the opening gap from 09:20 / 09:30. Costs 0.21% per round trip (charges on ₹20k +
+5 bps slippage each side). Report: `data/research/news_study/<run_id>/report.md`.
+
+- **Nothing passes** (n ≥ 100, net > 0 in both halves, t > 2, better than no-news controls). Before costs the
+  follow-through is ≈ 0 for every group, timing and horizon: the market prices filings within minutes (intraday) or
+  at the open (overnight). News vs no-news "edge" is within ±0.05% for most groups.
+- **Speed helps only a little:** entering 1 minute after the filing, the largest reactions continue +0.09–0.11%
+  over the next 5–15 minutes before costs — half the 0.21% cost. The remaining edge is sub-minute.
+- **Fading overnight order-win gaps** looked good in-sample (+0.30–0.41% net) but ~0 in validation; with ~200
+  combinations tested, one t ≈ 3 is what chance gives. Not a finding.
+- **What the study couldn't see:** whether the news is good or bad (the trade follows the market's first reaction),
+  and size relative to the company (an order worth 30% of revenue vs 0.3%). Those need the filing's content
+  (PDF text / Claude) — step 3 of the news plan — and remain the only untested reason to expect a news edge.
+
 ## 10. Compliance checklist (confirm with broker before live)
 - [ ] API access enabled; static IP whitelisted if required
 - [ ] 2FA / login flow that complies with broker terms (no prohibited login automation)
@@ -614,6 +639,6 @@ not counting breakeven exits toward the loss streak; a costlier-to-trade-less de
 ## 12. Open decisions
 - ~~Broker~~ — **decided: FYERS** (API v3; login, quotes and history verified 2026-09-23).
 - ~~Historical 1-min data source~~ — **decided: FYERS history API** (≥ 5 years of adjusted 1-min data, §4.2b).
-- News source for Indian equities (coverage, timestamp accuracy, cost).
+- ~~News source~~ — **decided: NSE filings** (JSON API + RSS fallback, §4.3). Headline APIs only if filings prove insufficient.
 - Hosting: home PC vs a VPS in Mumbai (static IP, uptime).
 - Starting capital and the risk-per-trade that implies.

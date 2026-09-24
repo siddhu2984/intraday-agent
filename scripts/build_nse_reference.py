@@ -21,26 +21,21 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-import http.cookiejar
 import io
-import json
 import re
 import sys
-import time
-import urllib.error
-import urllib.request
 import zipfile
 from pathlib import Path
 
 import pandas as pd
 
 from agent.broker.fyers_auth import PROJECT_ROOT
+from agent.data.nse_http import Fetcher
 from agent.ops.calendar import NseCalendar
 
 CACHE = PROJECT_ROOT / "data" / "nse_archives"
 OUT = PROJECT_ROOT / "data" / "reference"
 MEMBERS = PROJECT_ROOT / "config" / "universe" / "nifty500_members.csv"
-USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 SEC_LIST_URL = "https://nsearchives.nseindia.com/content/equities/sec_list_{:%d%m%Y}.csv"
 UDIFF_URL = "https://nsearchives.nseindia.com/content/cm/BhavCopy_NSE_CM_0_0_0_{:%Y%m%d}_F_0000.csv.zip"
@@ -50,48 +45,6 @@ BOARD_URL = "https://www.nseindia.com/api/corporate-board-meetings?index=equitie
 ACTIONS_URL = "https://www.nseindia.com/api/corporates-corporateActions?index=equities&from_date={:%d-%m-%Y}&to_date={:%d-%m-%Y}"
 EQUITY_SERIES = ("EQ", "BE", "BZ")
 NOT_PRICE_EVENTS = re.compile(r"general meeting|^agm$|^egm$", re.I)  # book closures with no price effect
-
-
-class Fetcher:
-    def __init__(self):
-        self.opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
-        self.opener.addheaders = [("User-Agent", USER_AGENT), ("Referer", HOME_URL)]
-        self._warmed = False
-
-    def get(self, url: str, cache: Path | None, retries: int = 3) -> bytes | None:
-        """Bytes of url (None on 404), cached on disk."""
-        if cache is not None and cache.exists():
-            return cache.read_bytes() or None
-        for attempt in range(1, retries + 1):
-            try:
-                with self.opener.open(url, timeout=60) as response:
-                    data = response.read()
-                break
-            except urllib.error.HTTPError as exc:
-                if exc.code == 404:
-                    data = b""
-                    break
-                if attempt == retries:
-                    raise
-            except OSError:
-                if attempt == retries:
-                    raise
-            time.sleep(5 * attempt)
-        if cache is not None:
-            cache.parent.mkdir(parents=True, exist_ok=True)
-            cache.write_bytes(data)
-        time.sleep(0.3)  # be polite to NSE
-        return data or None
-
-    def api(self, url: str, cache: Path) -> list:
-        if not self._warmed and not cache.exists():
-            try:
-                self.opener.open(HOME_URL, timeout=30).read()  # cookies
-            except OSError:
-                pass
-            self._warmed = True
-        data = self.get(url, cache)
-        return json.loads(data) if data else []
 
 
 def read_bhavcopy(fetcher: Fetcher, day: dt.date) -> pd.DataFrame | None:
@@ -196,7 +149,7 @@ def main() -> int:
     members = members[members["fyers_symbol"] != ""]
     calendar = NseCalendar.load()
     days = [d for d in calendar.trading_days(args.start, args.end)]
-    fetcher = Fetcher()
+    fetcher = Fetcher(HOME_URL)
     OUT.mkdir(parents=True, exist_ok=True)
 
     print(f"daily status for {len(days)} trading days ({days[0]} to {days[-1]})")

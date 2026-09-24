@@ -1,0 +1,194 @@
+# NSE filing category ('desc') → news group (agent.news.classify). 'text:<fallback>' = check the keyword rules on
+# the summary text first (first match wins), else the fallback. Unlisted categories → default.
+default: other
+
+categories:
+  # results
+  Financial Result Updates: results
+  Integrated Filing- Financial: results
+  Consolidated Result Updates - IFRS: results
+  Publish Audited Results: results
+  Outcome of Board Meeting: text:board_outcome
+  # orders and deals
+  Bagging/Receiving of orders/contracts: order_win
+  Awarding of order(s)/contract(s): order_win
+  Agreements: text:deal
+  Memorandum of Understanding/Agreements: text:deal
+  Arrangements for strategic, technical, manufacturing, or marketing tie up: deal
+  Rescission/termination(s): deal
+  Acquisition: mna
+  Amalgamation/Merger: mna
+  Scheme of Arrangement: mna
+  Demerger: mna
+  Sale or disposal: mna
+  Diversification/Disinvestment: mna
+  Open Offer: mna
+  Public Announcement-Open Offer: mna
+  Other Restructuring: mna
+  Restructuring: mna
+  # people
+  Change in Management: management
+  Resignation: management
+  Resignation of Director/KMP/SMP: management
+  Resignation of Independent director: management
+  Cessation: management
+  Retirement: management
+  Demise: management
+  Appointment: management
+  Change in Director(s): management
+  Change in Company Secretary/Compliance Officer: noise
+  # auditors
+  Change in Auditors: auditor
+  Resignation of Statutory Auditor: auditor
+  Audit Qualifications/Comments: auditor
+  Statement on Impact of Audit Qualifications: auditor
+  Initiation of Forensic Audit: auditor
+  Final  forensic  audit  report: auditor
+  # ratings, capital
+  Credit Rating: credit_rating
+  Credit Rating- Revision: credit_rating
+  Credit Rating- New: credit_rating
+  Credit Rating- Others: credit_rating
+  Allotment of Securities: fund_raising
+  Issue of Securities: fund_raising
+  Qualified Institutional Placement: fund_raising
+  Preferential issue: fund_raising
+  Rights Issue: fund_raising
+  Offer for sale: fund_raising
+  Institutional Placement Programme: fund_raising
+  Buyback: capital_return
+  Public Announcement - Buyback of Shares: capital_return
+  Bonus: capital_return
+  Stock split: capital_return
+  Dividend: dividend
+  Dividend Updates: dividend
+  # regulators, courts, defaults
+  Action(s) taken or orders passed: text:regulatory
+  Action(s) initiated or orders passed: text:regulatory
+  Pendency of Litigation(s)/dispute(s) or the outcome impacting the Company: regulatory
+  Fraud/Default/Arrest: regulatory
+  Frauds/Default by employees: regulatory
+  Delay/default in the payment of fines/penalties/dues etc. to authority: regulatory
+  Granting/withdrawal/surrender/cancellation/suspension of key licenses/ regulatory approvals: text:regulatory
+  Effect(s) on listed entity due to changed regulatory  framework applicable: regulatory
+  Corporate Insolvency Resolution Process: regulatory
+  Defaults on Payment of Interest/Principal: regulatory
+  Corporate Debt Restructuring: regulatory
+  Suspension of Trading: regulatory
+  # operations
+  Capacity addition: operations
+  Commencement of commercial production/operations: operations
+  Postponement of commercial production/operations: operations
+  Product launch: operations
+  Adoption of new line(s) of business: operations
+  Disruption of Operations: operations
+  Closure of operations: operations
+  Strikes/Lockouts/Disturbances: operations
+  Monthly Business Updates: business_update
+  # exchange asked the company to explain a move or a report
+  News Verification: exchange_query
+  Spurt in Volume: exchange_query
+  Price movement: exchange_query
+  Rumour Verification - Regulation 30(11): exchange_query
+  Clarification: exchange_query
+  Reply to Clarification Sought: exchange_query
+  Clarification - Financial Results: exchange_query
+  Reply to Clarification- Financial results: exchange_query
+  # say little by category — read the text
+  Press Release: text:press_release
+  Press Release (Revised): text:press_release
+  Updates: text:other
+  General Updates: text:other
+  Others: text:other
+  Disclosure of material issue: text:other
+  # routine
+  Analysts/Institutional Investor Meet/Con. Call Updates: noise
+  Loss of Share Certificates: noise
+  Issue of Duplicate Share Certificate: noise
+  Copy of Newspaper Publication: noise
+  Shareholders meeting: noise
+  Trading Window: noise
+  Certificate under SEBI (Depositories and Participants) Regulations, 2018: noise
+  Investor Presentation: noise
+  ESOP/ESOS/ESPS: noise
+  Allotment of ESOP/ESPS: noise
+  Options to purchase securities: noise
+  Disclosure under SEBI Takeover Regulations: noise
+  Record Date: noise
+  Revised Record date: noise
+  Cancellation of Record date: noise
+  Disclosure of record date for purpose of distribution: noise
+  Book Closure: noise
+  Revised Book Closure: noise
+  Date of payment of dividend: noise
+  Monitoring Agency Report: noise
+  Statement of deviation(s) or variation(s) under Reg. 32: noise
+  Utilisation of Funds: noise
+  Related Party Transactions: noise
+  Amendment to AOA/MOA: noise
+  Committee Meeting Updates: noise
+  Corrigendum: noise
+  Addendum: noise
+  Amendment(s): noise
+  Alteration/revision(s): noise
+  Registrar & Share Transfer Agent Update: noise
+  Interest Rates Updates: noise
+  Code of Conduct under SEBI(PIT) Reg., 2015: noise
+  Disclosure under SEBI (PIT) Reg 2015: noise
+  Trading Plan under PIT: noise
+  Trading Plan under SEBI (PIT) Reg., 2015: noise
+  Address Change: noise
+  Name Change: noise
+  Name and Symbol Change: noise
+  Symbol Change of company: noise
+  Incorporation: noise
+  Giving guarantees/indemnity/ becoming a surety for third party: noise
+  Redemption: noise
+  Declaration for audit reports with unmodified opinion(s): noise
+  Limited Review Report: noise
+  Auditor's report: noise
+  Integrated Filing- Governance: noise
+  Quarterly Compliance Report on Corporate governance - within 21 days from the end of the quarter: noise
+  Disclosure of Annual financial information (if submitted as part of Annual Report): noise
+  Structural Digital Database: noise
+  Increase in Authorised Capital: noise
+  Conversion: noise
+  Forfeiture: noise
+  Change in Financial Year: noise
+  Extension of Annual General Meeting: noise
+  Board meeting Cancelled: noise
+  Board Meeting Adjourned: noise
+  Post Buyback Public Announcement: noise
+  Closure of Buy Back: noise
+  Outcome of Unitholder meetings: noise
+  Notice of Unitholder meetings: noise
+  Voluntary Delisting: mna
+  Cancellation of Dividend: dividend
+  Reasons for Delayed/Non-submission of Financial Results: regulatory
+
+# Tried in order on the summary text for 'text:' categories.
+keywords:
+  - group: noise   # material that follows an event (calls, transcripts, decks) or is routine
+    pattern: 'transcript|audio recording|earnings call|con(ference)?[- ]call|investor presentation|analyst|investor(s)? (meet|conference)|plant visit|schedule of'
+  - group: usfda
+    pattern: 'US ?FDA|warning letter|form 483|import alert|establishment inspection|\bEIR\b|pre-approval inspection'
+  - group: regulatory
+    pattern: '\bGST\b|income[- ]tax|tax demand|show[- ]cause|penalt|order passed|demand order|assessment order|commissioner|state tax|search (and|&) seizure|enforcement directorate|\bCBI\b|\bSFIO\b|\bNCLT\b|\bNCLAT\b|arbitra|court|tribunal|litigation'
+  - group: results
+    pattern: 'financial results?|audited results|unaudited|results? for the (quarter|year|period)|quarter(ly)? results'
+  - group: order_win
+    pattern: '\border(s)? (received|worth|from|of|for|valued)|receipt of (an? )?order|bagg|letter of (award|acceptance|intent)|\bLoA\b|\bLOI\b|work order|purchase order|contract (award|worth|from|for|of)|awarded|lowest bidder|\bL-?1\b'
+  - group: mna
+    pattern: 'acqui|merger|amalgamat|demerger|stake|joint venture|\bJV\b|divest|scheme of arrangement'
+  - group: credit_rating
+    pattern: 'credit rating|rating (action|upgrade|downgrade|reaffirm)|\bCRISIL\b|\bICRA\b|\bCARE\b|India Ratings'
+  - group: fund_raising
+    pattern: '\bQIP\b|preferential|allotment|fund[- ]?rais|rights issue|non-convertible debentures|\bNCDs?\b|commercial paper'
+  - group: management
+    pattern: 'appoint|resign|cessation|re-designat|chief executive|\bCEO\b|\bCFO\b|managing director|senior management|\bKMP\b'
+  - group: business_update
+    pattern: 'figures for the month|monthly (sales|business)|sales (figures|volume|numbers)|business update|production,? sales'
+  - group: operations
+    pattern: 'commission|capacity|plant|commencement|production|launch|operations at|new facility|fire|flood|shutdown'
+  - group: noise
+    pattern: 'analyst|investor(s)? meet|con(ference)?[- ]call|newspaper|trading window|share certificate|voting results|annual general meeting|\bAGM\b|secretarial compliance|Regulation 74\(5\)|schedule of|postal ballot|e-voting'
