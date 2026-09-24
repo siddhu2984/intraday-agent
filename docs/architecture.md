@@ -555,6 +555,42 @@ Historical news backtests are unreliable (timestamp quality, and the model may a
 - Paper results within reasonable range of backtest (no large slippage surprise)
 - Zero unprotected positions and zero unreconciled mismatches during paper
 
+### 9.1 Phase 2 result — ORB v1 fails (2026-09-25)
+
+Run with `python -m agent.main backtest` over 2023-10-25 → 2026-09-23 (719 trading days; validation = last third
+from 2025-09-24). Point-in-time Nifty 500, historical price bands and T2T series, results-day / ex-date hard block,
+FYERS costs, 5 bps slippage, §8 defaults. Reports: `data/backtests/<run_id>/report.md`.
+
+| | 1× leverage | 5× leverage | Random baseline (1×) |
+|---|---|---|---|
+| Trades (validation) | 2,362 (812) | 2,373 (819) | ~1,980 |
+| Win rate | 23.9% | 24.0% | 19.6% |
+| Expectancy, **gross** | −0.05 R | −0.04 R | −0.17 R |
+| Costs per trade | 0.19 R | 0.16 R | 0.29 R |
+| Expectancy, net (validation) | −0.27 R | −0.23 R | −0.45 R |
+| Profit factor, net (validation) | 0.73 | 0.69 | 0.51 |
+| Max drawdown (validation) | 20.7% | 73.9% | 21.6% |
+
+**Verdict: FAIL** on expectancy, profit factor and drawdown; only "beats random entries" passes. Per §11, stop
+and rethink the strategy before phase 3.
+
+What the numbers say:
+- **No edge before costs.** Gross expectancy is slightly negative in every year (2024 −0.01 R, 2025 −0.05 R,
+  2026 −0.06 R). ORB is better than random entry (+0.12 R gross), so the screener/trigger carry *some* information,
+  but not enough to pay ~0.16–0.19 R of costs per trade.
+- **Longs lose, shorts are flat** (gross −0.08 R vs +0.02 R). Entries after 11:00 are worst; 09:30–11:00 is
+  roughly break-even gross.
+- **Exits:** stops average −1.28 R net (slippage + costs on a full 1 R loss), breakevens −0.29 R (all costs, no
+  gain), targets +2.09 R. 26% of trades end at breakeven, i.e. pay costs for nothing.
+- **Kill switch on 307 of 719 days:** a breakeven exit is a net loss after costs, so it extends the 3-loss streak.
+- **Sizing:** at 1× the position cap sets the size on 99.7% of trades (real risk 0.14% of capital, not 0.5%);
+  5× restores risk-based sizing (0.43%) and lowers cost per trade, but only magnifies the losses.
+- Circuit check: 826 rejections, but only 96 distinct stock-days (the same signal repeats every 5 min).
+
+Directions worth testing next (each as its own backtest, tuned on in-sample only): shorts-only or
+market-regime filter; entries only 09:30–11:00; wider targets / trailing exit instead of 2R + breakeven at 1R;
+not counting breakeven exits toward the loss streak; a costlier-to-trade-less design (fewer, larger-R trades).
+
 ## 10. Compliance checklist (confirm with broker before live)
 - [ ] API access enabled; static IP whitelisted if required
 - [ ] 2FA / login flow that complies with broker terms (no prohibited login automation)
@@ -568,7 +604,7 @@ Historical news backtests are unreliable (timestamp quality, and the model may a
 |---|---|---|
 | **0. Spec & data** | This doc finalized; ~~broker chosen~~ (FYERS); ~~data source chosen~~ (FYERS history, §4.2b); ~~candle downloader + store~~ (§4.2b); ~~point-in-time Nifty 500 list with sectors~~ (§4.4) | ~~Pilot (20 stocks + NIFTY50 × 36 months) passes quality checks~~; ~~full universe loadable~~ (done 2026-09-23, §4.2b) |
 | **1. Core + risk** | ~~Config, journal, risk gate, sizing, kill switch, calendar~~ | ~~Unit tests cover every risk rule and edge case~~ (done 2026-09-24, 115 new tests) |
-| **2. Backtester** | `SimBroker`, cost model, ORB strategy, screener, reports | Reproducible backtest report; passes or fails the success criteria. **Stop and rethink the strategy if it fails.** |
+| **2. Backtester** | ~~`SimBroker`, cost model, ORB strategy, screener, reports~~ (done 2026-09-25) | Reproducible backtest report; passes or fails the success criteria. **Stop and rethink the strategy if it fails.** → **ORB v1 FAILS (§9.1)** |
 | **3. Broker + OMS** | `LiveBroker` adapter, OMS state machine, reconciler, alerts | Paper mode runs a full day unattended; kill-the-process test recovers correctly |
 | **4. Paper trading** | 2–4 weeks live paper | Success criteria met on paper; no unprotected positions |
 | **5. News veto** | News adapter, Claude scoring, cache, shadow evaluation | Veto shows measurable benefit, else leave disabled |
